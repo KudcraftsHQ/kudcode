@@ -61,6 +61,7 @@ import { readProject } from "../state/entities";
 import { getDesktopSnapShotBridge } from "../lib/desktopSnapShot";
 import { isChunkLoadError } from "../lib/chunkReloadGuard";
 import { shouldResumeSnapShotSetupOnStartup } from "../lib/snapShotSetupResume";
+import { KUD_CANVAS_IS_HOME } from "../kud/canvas/home";
 
 export const Route = createRootRoute({
   beforeLoad: async ({ location }) => {
@@ -384,7 +385,7 @@ function EventRouter({
         );
       useUiStateStore.getState().setProjectExpanded(bootstrapProjectKey, true);
 
-      if (readPathname() !== "/") {
+      if (readPathname() !== "/" || KUD_CANVAS_IS_HOME) {
         return;
       }
       if (skipInitialBootstrapNavigationRef.current) {
