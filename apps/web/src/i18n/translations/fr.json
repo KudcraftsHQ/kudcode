@@ -3201,7 +3201,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "sur l’ordinateur qui a ouvert cette page"]
+      "c": [
+        " ",
+        "sur l’ordinateur qui a ouvert cette page"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3213,7 +3216,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· quiconque l’exécute obtient cet accès"]
+      "c": [
+        " ",
+        "· quiconque l’exécute obtient cet accès"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "N’approuvez qu’une connexion que vous venez de lancer.",
@@ -12758,7 +12764,6 @@
   "a47225ce3e4be13c": "Un fil ne peut être rattaché qu'à un fil de la même machine.",
   "bb28679587c7e9c4": "Un fil ne peut pas être rattaché à lui-même.",
   "48df68bb091c712e": "Ces fils sont déjà liés dans l'autre sens.",
-  "771b30ba0791004c": "L'identifiant de ce fil parent est trop long pour être enregistré comme lien.",
   "d5ef094f40aedece": "Saisie du terminal",
   "f7046b10d49caab6": "Historique du terminal",
   "24de858bbcf05f40": "Diapositive {number}",
@@ -12874,5 +12879,10 @@
   "27d76249d09eb69f": "Guide de revue prêt",
   "faa3bb26abb39c93": "Échec du guide de revue",
   "b7df38b7d8792d78": "Ouvrir le guide",
-  "9e91e9a77b664e4e": "Impossible de démarrer un guide de revue"
+  "9e91e9a77b664e4e": "Impossible de démarrer un guide de revue",
+  "d5120745cce8256c": "Le serveur n'a pas pu enregistrer le lien.",
+  "667d108ebefa3af9": "Cette machine n'est pas connectée.",
+  "6e8fb2ad5a9a0c33": "Cette connexion ne peut pas enregistrer de liens sur cette machine.",
+  "2f0435c42dfc6007": "Les liens enregistrés n'ont pas pu être lus.",
+  "c1c3217c81ef03f1": "Une autre fenêtre modifiait sans cesse les liens. Réessaie."
 }

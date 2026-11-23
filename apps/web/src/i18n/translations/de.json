@@ -3202,7 +3202,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "auf dem Computer, der diese Seite geöffnet hat"]
+      "c": [
+        " ",
+        "auf dem Computer, der diese Seite geöffnet hat"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3214,7 +3217,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· wer es ausführt, erhält diesen Zugriff"]
+      "c": [
+        " ",
+        "· wer es ausführt, erhält diesen Zugriff"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Genehmige nur eine Anmeldung, die du gerade selbst gestartet hast.",
@@ -12760,7 +12766,6 @@
   "a47225ce3e4be13c": "Ein Thread kann nur unter einem Thread auf demselben Rechner verknüpft werden.",
   "bb28679587c7e9c4": "Ein Thread kann nicht unter sich selbst verknüpft werden.",
   "48df68bb091c712e": "Diese Threads sind bereits andersherum verknüpft.",
-  "771b30ba0791004c": "Die ID dieses übergeordneten Threads ist zu lang, um als Verknüpfung gespeichert zu werden.",
   "d5ef094f40aedece": "Terminal-Eingabe",
   "f7046b10d49caab6": "Terminal-Verlauf",
   "24de858bbcf05f40": "Folie {number}",
@@ -12874,5 +12879,10 @@
   "27d76249d09eb69f": "Review-Leitfaden bereit",
   "faa3bb26abb39c93": "Review-Leitfaden fehlgeschlagen",
   "b7df38b7d8792d78": "Leitfaden öffnen",
-  "9e91e9a77b664e4e": "Review-Leitfaden konnte nicht gestartet werden"
+  "9e91e9a77b664e4e": "Review-Leitfaden konnte nicht gestartet werden",
+  "d5120745cce8256c": "Der Server konnte die Verknüpfung nicht speichern.",
+  "667d108ebefa3af9": "Dieser Rechner ist nicht verbunden.",
+  "6e8fb2ad5a9a0c33": "Diese Verbindung kann auf diesem Rechner keine Verknüpfungen speichern.",
+  "2f0435c42dfc6007": "Die gespeicherten Verknüpfungen konnten nicht gelesen werden.",
+  "c1c3217c81ef03f1": "Ein anderes Fenster hat die Verknüpfungen ständig geändert. Versuche es erneut."
 }

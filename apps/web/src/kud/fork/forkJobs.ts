@@ -39,14 +39,13 @@ import { readThreadShell, waitForThreadShell } from "~/state/entities";
 import { environmentServerConfigsAtom } from "~/state/server";
 import { readEnvironmentScope } from "~/state/session";
 import { environmentThreadDetails, threadEnvironment } from "~/state/threads";
-import { kudParentTag, KUD_PARENT_TAG_PREFIX, readKudParentTag } from "../shared/contract";
+import { readStoredParent, setStoredParent } from "../links/linkStore";
+import { KUD_PARENT_TAG_PREFIX, readKudParentTag } from "../shared/contract";
 import { briefRequestText, continueFromBriefText, titleFromDirection } from "./briefPrompts";
 
 /** A brief is one short answer; past this the provider is stuck or waiting on the user. */
 const BRIEF_TIMEOUT_MS = 10 * 60_000;
 const SHELL_TIMEOUT_MS = 10_000;
-/** `thread.tag.set` takes tags of at most 64 characters. */
-const THREAD_TAG_MAX_LENGTH = 64;
 
 const dispatchCommand = createEnvironmentCommand(connectionAtomRuntime, {
   label: "kud:fork:dispatch",
@@ -394,10 +393,36 @@ export async function reportBack(child: ScopedThreadRef): Promise<void> {
   });
 }
 
-/** Sets or clears the `kud:parent:` tag, leaving the thread's other tags alone. */
+/** The parent a thread hangs under: engine lineage first, then a manual link (store or old tag). */
+function effectiveParentId(ref: ScopedThreadRef): ThreadId | null {
+  const shell = readThreadShell(ref);
+  if (shell !== null) {
+    if (shell.forkedFrom?.type === "run") return shell.forkedFrom.threadId;
+    if (shell.lineage.parentThreadId !== null) return shell.lineage.parentThreadId;
+  }
+  return (
+    readStoredParent(ref.environmentId, ref.threadId)?.parentThreadId ??
+    readKudParentTag(shell?.source.tags)
+  );
+}
+
+/** Whether `child` is `ref` or one of its ancestors, so linking `child` under `ref` makes a cycle. */
+function isAncestorOrSelf(ref: ScopedThreadRef, child: ScopedThreadRef): boolean {
+  const seen = new Set<string>();
+  for (let id: ThreadId | null = ref.threadId; id !== null;) {
+    if (id === child.threadId) return true;
+    if (seen.has(id)) return false;
+    seen.add(id);
+    id = effectiveParentId(scopeThreadRef(ref.environmentId, id));
+  }
+  return false;
+}
+
+/** Links a thread under another in the server's link store, or unlinks it (`parent: null`). */
 export async function setManualParent(
   child: ScopedThreadRef,
   parent: ScopedThreadRef | null,
+  label?: string,
 ): Promise<void> {
   assertCanOperate(child.environmentId);
   if (parent !== null) {
@@ -407,17 +432,19 @@ export async function setManualParent(
     if (parent.threadId === child.threadId) {
       throw new Error(m(msg("A thread cannot be linked under itself.")));
     }
-    if (readKudParentTag(readThreadShell(parent)?.source.tags) === child.threadId) {
+    if (isAncestorOrSelf(parent, child)) {
       throw new Error(m(msg("These threads are already linked the other way round.")));
     }
   }
-  const nextTag = parent === null ? null : kudParentTag(parent.threadId as ThreadId);
-  if (nextTag !== null && nextTag.length > THREAD_TAG_MAX_LENGTH) {
-    throw new Error(m(msg("This parent's id is too long to store as a link.")));
-  }
-  const currentTags = readThreadShell(child)?.source.tags ?? [];
-  const staleTags = currentTags.filter(
-    (tag) => tag.startsWith(KUD_PARENT_TAG_PREFIX) && tag !== nextTag,
+  await setStoredParent({
+    environmentId: child.environmentId,
+    childThreadId: child.threadId,
+    parentThreadId: parent === null ? null : parent.threadId,
+    ...(label === undefined ? {} : { label }),
+  });
+  // A link made before the store existed is a tag; an explicit change replaces it.
+  const staleTags = (readThreadShell(child)?.source.tags ?? []).filter((tag) =>
+    tag.startsWith(KUD_PARENT_TAG_PREFIX),
   );
   for (const tag of staleTags) {
     await dispatch(child.environmentId, {
@@ -426,15 +453,6 @@ export async function setManualParent(
       threadId: child.threadId,
       tag,
       tagged: false,
-    });
-  }
-  if (nextTag !== null && !currentTags.includes(nextTag)) {
-    await dispatch(child.environmentId, {
-      type: "thread.tag.set",
-      commandId: newCommandId(),
-      threadId: child.threadId,
-      tag: nextTag,
-      tagged: true,
     });
   }
 }

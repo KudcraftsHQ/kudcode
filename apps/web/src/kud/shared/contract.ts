@@ -5,9 +5,9 @@ import type { EnvironmentId, ScopedThreadRef, ThreadId } from "@t3tools/contract
 import { createContext } from "react";
 
 /**
- * Thread tag that records a parent the user linked by hand: `kud:parent:<threadId>`. Tags hold at
- * most 64 characters, so `setManualParent` refuses a parent id longer than 53 instead of storing
- * a shortened one: the tag always holds the whole id.
+ * Thread tag that recorded a parent the user linked by hand: `kud:parent:<threadId>`. Replaced by
+ * the link store (`apps/web/src/kud/links`); still read for links made before it, and moved into
+ * the store (then removed from the thread) on first load.
  * @public
  */
 export const KUD_PARENT_TAG_PREFIX = "kud:parent:";
@@ -17,7 +17,7 @@ export function kudParentTag(parentThreadId: ThreadId): string {
   return `${KUD_PARENT_TAG_PREFIX}${parentThreadId}`;
 }
 
-/** The parent a user linked by hand, from a thread's tags. Engine lineage always wins over this. */
+/** The parent a user linked by hand, from a thread's old tag. Engine lineage always wins over this. */
 export function readKudParentTag(tags: ReadonlyArray<string> | undefined): ThreadId | null {
   const tag = tags?.find((value) => value.startsWith(KUD_PARENT_TAG_PREFIX));
   if (tag === undefined) return null;
@@ -42,10 +42,11 @@ export interface KudForkActions {
   ) => Promise<ReadonlyArray<ScopedThreadRef>>;
   /** Send a fork's result back to its parent (`thread.merge_back`). */
   readonly reportBack: (child: ScopedThreadRef) => Promise<void>;
-  /** Link a thread under another by hand (tag). `parent: null` unlinks. */
+  /** Link a thread under another by hand (link store). `parent: null` unlinks. */
   readonly setManualParent: (
     child: ScopedThreadRef,
     parent: ScopedThreadRef | null,
+    label?: string,
   ) => Promise<void>;
 }
 

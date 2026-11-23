@@ -3201,7 +3201,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "no computador que abriu esta página"]
+      "c": [
+        " ",
+        "no computador que abriu esta página"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3213,7 +3216,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· quem executar recebe este acesso"]
+      "c": [
+        " ",
+        "· quem executar recebe este acesso"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Aprove apenas um login que você acabou de iniciar.",
@@ -12758,7 +12764,6 @@
   "a47225ce3e4be13c": "Uma conversa só pode ser vinculada a outra na mesma máquina.",
   "bb28679587c7e9c4": "Uma conversa não pode ser vinculada a si mesma.",
   "48df68bb091c712e": "Estas conversas já estão vinculadas no sentido inverso.",
-  "771b30ba0791004c": "O id desta conversa original é longo demais para salvar como vínculo.",
   "d5ef094f40aedece": "Entrada do terminal",
   "f7046b10d49caab6": "Histórico de rolagem do terminal",
   "24de858bbcf05f40": "Slide {number}",
@@ -12874,5 +12879,10 @@
   "27d76249d09eb69f": "Guia de revisão pronto",
   "faa3bb26abb39c93": "O guia de revisão falhou",
   "b7df38b7d8792d78": "Abrir guia",
-  "9e91e9a77b664e4e": "Não foi possível iniciar um guia de revisão"
+  "9e91e9a77b664e4e": "Não foi possível iniciar um guia de revisão",
+  "d5120745cce8256c": "O servidor não conseguiu salvar o vínculo.",
+  "667d108ebefa3af9": "Esta máquina não está conectada.",
+  "6e8fb2ad5a9a0c33": "Esta conexão não pode salvar vínculos nessa máquina.",
+  "2f0435c42dfc6007": "Não foi possível ler os vínculos salvos.",
+  "c1c3217c81ef03f1": "Outra janela continuou alterando os vínculos. Tente novamente."
 }

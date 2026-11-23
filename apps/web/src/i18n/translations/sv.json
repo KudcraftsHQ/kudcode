@@ -3201,7 +3201,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "på datorn som öppnade den här sidan"]
+      "c": [
+        " ",
+        "på datorn som öppnade den här sidan"
+      ]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3213,7 +3216,10 @@
     {
       "t": "span",
       "i": 2,
-      "c": [" ", "· den som kör den får den här åtkomsten"]
+      "c": [
+        " ",
+        "· den som kör den får den här åtkomsten"
+      ]
     }
   ],
   "c54cc9c75db9dc58": "Godkänn bara en inloggning som du själv precis har startat.",
@@ -12766,7 +12772,6 @@
   "a47225ce3e4be13c": "En tråd kan bara länkas under en tråd på samma dator.",
   "bb28679587c7e9c4": "En tråd kan inte länkas under sig själv.",
   "48df68bb091c712e": "Trådarna är redan länkade åt andra hållet.",
-  "771b30ba0791004c": "Föräldertrådens id är för långt för att sparas som en länk.",
   "d5ef094f40aedece": "Terminalinmatning",
   "f7046b10d49caab6": "Terminalens rullningshistorik",
   "24de858bbcf05f40": "Bild {number}",
@@ -12881,5 +12886,10 @@
   "27d76249d09eb69f": "Granskningsguiden är klar",
   "faa3bb26abb39c93": "Granskningsguiden misslyckades",
   "b7df38b7d8792d78": "Öppna guiden",
-  "9e91e9a77b664e4e": "Kunde inte starta en granskningsguide"
+  "9e91e9a77b664e4e": "Kunde inte starta en granskningsguide",
+  "d5120745cce8256c": "Servern kunde inte spara länken.",
+  "667d108ebefa3af9": "Den här datorn är inte ansluten.",
+  "6e8fb2ad5a9a0c33": "Den här anslutningen kan inte spara länkar på den datorn.",
+  "2f0435c42dfc6007": "De sparade länkarna kunde inte läsas.",
+  "c1c3217c81ef03f1": "Ett annat fönster ändrade länkarna hela tiden. Försök igen."
 }
