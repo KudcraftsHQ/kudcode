@@ -5,7 +5,12 @@ import { useAtomValue } from "@effect/atom-react";
 import { scopedThreadKey, scopeThreadRef } from "@t3tools/client-runtime/environment";
 import { thrownErrorMessage } from "@t3tools/client-runtime/errors";
 import type { EnvironmentThreadShell } from "@t3tools/client-runtime/state/models";
-import { isListedThreadLineage, type EnvironmentId, type ThreadId } from "@t3tools/contracts";
+import {
+  isListedThreadLineage,
+  type EnvironmentId,
+  type ScopedThreadRef,
+  type ThreadId,
+} from "@t3tools/contracts";
 import { useNavigate } from "@tanstack/react-router";
 import {
   Background,
@@ -69,9 +74,15 @@ import {
 import { useOlderSettledShelf, useOlderSettledShelfGrowth } from "../../state/olderSettledShelf";
 import { primaryServerProvidersAtom } from "../../state/server";
 import { threadFamilies } from "../../state/threads";
+import { newThreadId } from "../../lib/utils";
 import { buildThreadRouteParams } from "../../threadRoutes";
 import { KudManualLinksContext } from "../shared/contract";
-import { DirectionDialog, LinkUnderDialog } from "./CanvasDialogs";
+import {
+  ChildThreadDialog,
+  DirectionDialog,
+  LinkUnderDialog,
+  type ChildThreadDraft,
+} from "./CanvasDialogs";
 import {
   CanvasInteractionsContext,
   type CanvasDialogKind,
@@ -85,10 +96,12 @@ import {
   linkCandidates,
   projectKeyOf,
   savedPositionKey,
+  withPendingChildren,
   type CanvasFamily,
   type CanvasFlowNode,
   type CanvasMode,
   type CanvasThread,
+  type PendingChild,
   type SavedPositions,
 } from "./canvasGraph.logic";
 import {
@@ -265,6 +278,17 @@ export function KudHomeLanding() {
 interface DialogState {
   readonly kind: CanvasDialogKind;
   readonly key: string;
+  /** What the child dialog held when its creation failed, so nothing typed is lost. */
+  readonly draft?: ChildThreadDraft;
+}
+
+function firstLine(text: string): string {
+  return (
+    text
+      .split("\n")
+      .map((line) => line.trim())
+      .find((line) => line.length > 0) ?? ""
+  );
 }
 
 function CanvasView({
@@ -288,6 +312,7 @@ function CanvasView({
   const projects = useProjects();
   const bootstrapped = useAllEnvironmentShellsBootstrapped();
   const providerEntries = useProviderEntries();
+  const { environments } = useEnvironments();
 
   const liveProjects = projects
     .filter((project) => project.archivedAt == null)
@@ -300,12 +325,16 @@ function CanvasView({
 
   const manualLinks = use(KudManualLinksContext);
   const startedBy = useStartedByAnswers();
-  const forest = buildCanvasForest({
-    threads,
-    hiddenKeys,
-    manualLinks: manualLinks.byChild,
-    startedBy,
-  });
+  const [pendingChildren, setPendingChildren] = useState<ReadonlyArray<PendingChild>>([]);
+  const forest = withPendingChildren(
+    buildCanvasForest({
+      threads,
+      hiddenKeys,
+      manualLinks: manualLinks.byChild,
+      startedBy,
+    }),
+    pendingChildren,
+  );
   const families = filterCanvasFamilies(forest.families, { includeSettled, projectKey });
   useCanvasFamilyMounts(families);
   // Agent-launched roots of the trees on screen; children placed by hand are already settled.
@@ -352,6 +381,8 @@ function CanvasView({
   const [expandedSubagents, setExpandedSubagents] = useState<ReadonlySet<string>>(new Set());
   const [collapsedProjects, setCollapsedProjects] = useState<ReadonlySet<string>>(new Set());
   const [dialog, setDialog] = useState<DialogState | null>(null);
+  /** A new card to bring into view with its parent, once it is laid out. */
+  const [focus, setFocus] = useState<{ key: string; parentKey: string } | null>(null);
   const [overrides, setOverrides] = useState<{
     readonly dragging: ReadonlyMap<string, XYPosition>;
     readonly selected: ReadonlySet<string>;
@@ -391,6 +422,19 @@ function CanvasView({
     return { ...node, selected, ...(dragged === undefined ? {} : { position: dragged }) };
   });
 
+  const focusLaidOut = focus !== null && nodes.some((node) => node.id === focus.key);
+  // Runs once per new card: the placeholder it waits for leaves when the real thread arrives.
+  // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- scrolls React Flow's viewport to a new card once it is on the canvas
+  useEffect(() => {
+    if (!focusLaidOut || focus === null) return;
+    // Centred at the current zoom: a queued fitView would wait for every card to be measured.
+    const bounds = reactFlow.getNodesBounds([focus.parentKey, focus.key]);
+    void reactFlow.setCenter(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, {
+      zoom: reactFlow.getZoom(),
+      duration: 250,
+    });
+  }, [focusLaidOut, focus, reactFlow]);
+
   const refOf = (item: CanvasThread) => scopeThreadRef(item.thread.environmentId, item.thread.id);
   const errorDescription = (error: unknown) =>
     isKudForkActionsUnavailable(error)
@@ -418,15 +462,53 @@ function CanvasView({
     }
   };
 
+  const openRef = (ref: ScopedThreadRef) => {
+    rememberOpenedThreadKey(scopedThreadKey(ref));
+    void navigate({ to: "/$environmentId/$threadId", params: buildThreadRouteParams(ref) });
+  };
+
+  const createChild = (parent: CanvasThread, draft: ChildThreadDraft, open: boolean) => {
+    const placeholderId = newThreadId();
+    const key = scopedThreadKey(scopeThreadRef(parent.thread.environmentId, placeholderId));
+    const message = draft.message.trim();
+    setPendingChildren((current) => [
+      ...current,
+      {
+        key,
+        placeholderId,
+        parentKey: parent.key,
+        createdKey: null,
+        title: firstLine(message) || gt("New thread"),
+        startedAt: new Date().toISOString(),
+      },
+    ]);
+    setDialog(null);
+    select(key);
+    setFocus({ key, parentKey: parent.key });
+    actions.createChildThread({ parent: refOf(parent), message, withBrief: draft.withBrief }).then(
+      (child) => {
+        const childKey = scopedThreadKey(child);
+        setPendingChildren((current) =>
+          current.map((entry) => (entry.key === key ? { ...entry, createdKey: childKey } : entry)),
+        );
+        setOverrides((current) =>
+          current.selected.has(key) ? { ...current, selected: new Set([childKey]) } : current,
+        );
+        if (open) openRef(child);
+      },
+      (error: unknown) => {
+        setPendingChildren((current) => current.filter((entry) => entry.key !== key));
+        showError(gt("Couldn’t create the thread"), error);
+        setDialog({ kind: "child", key: parent.key, draft });
+      },
+    );
+  };
+
   const interactions: CanvasInteractions = {
     openThread: (key) => {
       const item = forest.threads.get(key);
-      if (item === undefined) return;
-      rememberOpenedThreadKey(key);
-      void navigate({
-        to: "/$environmentId/$threadId",
-        params: buildThreadRouteParams(refOf(item)),
-      });
+      if (item === undefined || item.pending) return;
+      openRef(refOf(item));
     },
     toggleSubagents: (key) => setExpandedSubagents((current) => toggled(current, key)),
     toggleProject: (key) => setCollapsedProjects((current) => toggled(current, key)),
@@ -552,6 +634,18 @@ function CanvasView({
   const filtersActive = includeSettled || projectKey !== null;
   const projectTitleOf = (item: CanvasThread) =>
     projectTitles.get(projectKeyOf(item.thread.environmentId, item.thread.projectId)) ?? "";
+  const whereOf = (item: CanvasThread) => {
+    const provider = interactions.providerFor(item.thread);
+    const slug = item.thread.modelSelection.model;
+    const model = provider?.models.find((entry) => entry.slug === slug);
+    return gt("{project} on {machine}, {model}", {
+      project: projectTitleOf(item),
+      machine:
+        environments.find((environment) => environment.environmentId === item.thread.environmentId)
+          ?.label ?? item.thread.environmentId,
+      model: model?.shortName ?? model?.name ?? slug,
+    });
+  };
 
   return (
     <CanvasInteractionsContext value={interactions}>
@@ -716,7 +810,16 @@ function CanvasView({
           </Empty>
         ) : null}
       </div>
-      {dialog !== null && dialogItem !== undefined && dialog.kind !== "link" ? (
+      {dialog?.kind === "child" && dialogItem !== undefined ? (
+        <ChildThreadDialog
+          parentTitle={dialogItem.thread.title}
+          where={whereOf(dialogItem)}
+          initial={dialog.draft}
+          onClose={() => setDialog(null)}
+          onSubmit={(draft, open) => createChild(dialogItem, draft, open)}
+        />
+      ) : null}
+      {(dialog?.kind === "fork" || dialog?.kind === "explore") && dialogItem !== undefined ? (
         <DirectionDialog
           multiple={dialog.kind === "explore"}
           parentTitle={dialogItem.thread.title}

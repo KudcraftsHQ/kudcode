@@ -27,6 +27,8 @@ export interface CanvasThread {
   readonly settled: boolean;
   readonly createdAtMs: number;
   readonly activityMs: number;
+  /** A child being created: shown under its parent until the real thread arrives. */
+  readonly pending?: true;
 }
 
 export interface CanvasFamily {
@@ -210,6 +212,97 @@ export function buildCanvasForest(input: {
     });
   }
   families.sort((left, right) => right.activityMs - left.activityMs);
+  return { threads, children, families };
+}
+
+/** A child thread the canvas asked for and has not received yet. */
+export interface PendingChild {
+  /** Key of the placeholder card, `scopedThreadKey` of the parent's environment and this id. */
+  readonly key: string;
+  readonly placeholderId: ThreadId;
+  readonly parentKey: string;
+  /** Key of the created thread, once creation returned it. */
+  readonly createdKey: string | null;
+  readonly title: string;
+  readonly startedAt: string;
+}
+
+/** A card that stands in for the new thread: the parent's place and settings, none of its state. */
+function placeholderShell(
+  parent: EnvironmentThreadShell,
+  id: ThreadId,
+  pending: PendingChild,
+): EnvironmentThreadShell {
+  return {
+    ...parent,
+    id,
+    title: pending.title,
+    lineage: { ...parent.lineage, parentThreadId: null, rootThreadId: id },
+    forkedFrom: null,
+    latestRun: null,
+    runtime: null,
+    goal: null,
+    latestUserMessageAt: null,
+    hasPendingApprovals: false,
+    hasPendingUserInput: false,
+    hasActionableProposedPlan: false,
+    pendingBackgroundTasks: [],
+    pullRequests: [],
+    linkedPullRequest: null,
+    branchPullRequest: null,
+    settledOverride: null,
+    pinnedAt: null,
+    createdAt: pending.startedAt,
+    updatedAt: pending.startedAt,
+    lastVisitedAt: pending.startedAt,
+  };
+}
+
+/**
+ * Adds a placeholder card under each parent for children still being created. One disappears
+ * once its real thread is in the forest, which then takes its place.
+ */
+export function withPendingChildren(
+  forest: CanvasForest,
+  pending: ReadonlyArray<PendingChild>,
+): CanvasForest {
+  const shown = pending.filter(
+    (entry) =>
+      forest.threads.has(entry.parentKey) &&
+      (entry.createdKey === null || !forest.threads.has(entry.createdKey)),
+  );
+  if (shown.length === 0) return forest;
+  const threads = new Map(forest.threads);
+  const children = new Map(forest.children);
+  const added = new Map<string, CanvasThread[]>();
+  for (const entry of shown) {
+    const parent = forest.threads.get(entry.parentKey)!;
+    const startedMs = millis(entry.startedAt);
+    const item: CanvasThread = {
+      key: entry.key,
+      thread: placeholderShell(parent.thread, entry.placeholderId, entry),
+      parentKey: parent.key,
+      relation: "linked",
+      engineRoot: true,
+      settled: false,
+      createdAtMs: startedMs,
+      activityMs: startedMs,
+      pending: true,
+    };
+    threads.set(item.key, item);
+    children.set(parent.key, [...(children.get(parent.key) ?? []), item.key]);
+    added.set(parent.key, [...(added.get(parent.key) ?? []), item]);
+  }
+  const families = forest.families.map((family) => {
+    const extra = family.members.flatMap((member) => added.get(member.key) ?? []);
+    if (extra.length === 0) return family;
+    return {
+      ...family,
+      members: [...family.members, ...extra],
+      activityMs: Math.max(family.activityMs, ...extra.map((item) => item.activityMs)),
+      hasUnsettled: true,
+    };
+  });
   return { threads, children, families };
 }
 

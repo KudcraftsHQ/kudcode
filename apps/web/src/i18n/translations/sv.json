@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "på datorn som öppnade den här sidan"
-      ]
+      "c": [" ", "på datorn som öppnade den här sidan"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· den som kör den får den här åtkomsten"
-      ]
+      "c": [" ", "· den som kör den får den här åtkomsten"]
     }
   ],
   "c54cc9c75db9dc58": "Godkänn bara en inloggning som du själv precis har startat.",
@@ -12678,6 +12672,10 @@
   "0e4b49c8203aae81": "Tidsgränsen överskreds i väntan på en autentiserad session efter uppstart.",
   "d7ffde2874d60d4f": "Ange en parkopplingstoken för att fortsätta.",
   "5d18537f82794deb": "Den lokala miljön är inaktiverad.",
+  "2a70b91382867eb0": "En ny tråd under ”{title}”.",
+  "7894961fce3a683b": "Första meddelandet",
+  "2be149339b617a4a": "Vad ska den nya tråden göra härnäst?",
+  "95d164d98e9aff44": "Vad ska den nya tråden göra? Lämna tomt för att skapa den utan meddelande.",
   "4bc0a57fe3b94148": "En sammanfattning av ”{title}”, sedan en fork per riktning, alla startade samtidigt.",
   "fd3be4798ba30546": "En fork av ”{title}” som börjar med en kort sammanfattning och din riktning.",
   "c5c655af5f0f0cbe": "Riktning {number}",
@@ -12686,6 +12684,10 @@
   "a782cce1afc28658": "Ta bort riktning {number}",
   "c7fafcfb82b9b7b9": "{count, plural, one {Starta # fork} other {Starta # forkar}}",
   "c21756bc0f1ea585": "Visa ”{title}” som underordnad den tråd du väljer.",
+  "37d840dba3519940": "Ny undertråd",
+  "cef4d5e204b7bed8": "Börja från en sammanfattning av den här tråden",
+  "c8bfedd612141fc0": "Skapa och öppna",
+  "baaf07d893736ec8": "Skapa",
   "0b4802dc9ab2dc9f": "Utforska riktningar",
   "cb826fc94d69805d": "Forka med sammanfattning",
   "68c478c1aacbdb94": "Riktning",
@@ -12698,9 +12700,11 @@
   "f56a782efbf4f600": "Länkad under ”{title}”",
   "07e16d5d75da2a5d": "Kunde inte ta bort länken",
   "d8b199ed2c39cfe0": "Kunde inte länka",
+  "cdb868bfd980d7db": "Det gick inte att skapa tråden",
   "530cd0abc8e59ed0": "Rapporterade till överordnad",
   "d4cf8b582f7496a3": "Kunde inte rapportera",
   "b93f6908a888059d": "Länka ”{child}” under ”{parent}”?",
+  "d97f66ca4c3298c4": "{project} på {machine}, {model}",
   "9ca92f2f8b481bfd": "Canvas-sökväg",
   "b957fc9acc355efc": "Canvas-layout",
   "e74d41767a0adc98": "Träd",
@@ -12736,9 +12740,12 @@
   "2bb3b1aaf6a235db": "Samma PR som ”{title}”",
   "1ffe9c6c9c0b0483": "Samma gren som ”{title}” och {count} till",
   "0771a668eb4b7c24": "Samma gren som ”{title}”",
+  "35c0a6ab7bc78b52": "Skapar tråd…",
   "0c361770fe512f2c": "Trådåtgärder",
   "8ff1393290569b16": "Dölj {count} subagenter",
   "b3d9f929227d56ed": "Visa {count} subagenter",
+  "942a5b9928b3d2d8": "Ny undertråd",
+  "cd2a0864b939c597": "Ny undertråd…",
   "6abdce7ea78497d6": "Forka med sammanfattning…",
   "c89f668ba4057829": "Utforska riktningar…",
   "807707d4a33c603f": "Rapportera till överordnad",
@@ -12756,6 +12763,10 @@
   "cd64d26f943fa9e8": "Forka med en sammanfattning",
   "5f18181fb502c1a2": "Forka med sammanfattning...",
   "2a7ff642459581f2": "Utforska riktningar...",
+  "8d3721caa61445d4": "Tråden kunde inte skapas.",
+  "b44e53d84e480f6b": "Den överordnade tråden är inte inläst i den här klienten.",
+  "69e1016895468b81": "Tråden skapades men länkades inte",
+  "e64d15de917dc1a4": "Länka den under sin överordnade tråd med ”Länka under…”. {reason}",
   "298863d82706d076": "Avbrutet.",
   "ead2ca80d4fac317": "Servern avvisade kommandot.",
   "ffb1e427a1998200": "Forken kunde inte starta från en sammanfattning",
@@ -12772,6 +12783,11 @@
   "a47225ce3e4be13c": "En tråd kan bara länkas under en tråd på samma dator.",
   "bb28679587c7e9c4": "En tråd kan inte länkas under sig själv.",
   "48df68bb091c712e": "Trådarna är redan länkade åt andra hållet.",
+  "d5120745cce8256c": "Servern kunde inte spara länken.",
+  "667d108ebefa3af9": "Den här datorn är inte ansluten.",
+  "6e8fb2ad5a9a0c33": "Den här anslutningen kan inte spara länkar på den datorn.",
+  "2f0435c42dfc6007": "De sparade länkarna kunde inte läsas.",
+  "c1c3217c81ef03f1": "Ett annat fönster ändrade länkarna hela tiden. Försök igen.",
   "d5ef094f40aedece": "Terminalinmatning",
   "f7046b10d49caab6": "Terminalens rullningshistorik",
   "24de858bbcf05f40": "Bild {number}",
@@ -12886,10 +12902,5 @@
   "27d76249d09eb69f": "Granskningsguiden är klar",
   "faa3bb26abb39c93": "Granskningsguiden misslyckades",
   "b7df38b7d8792d78": "Öppna guiden",
-  "9e91e9a77b664e4e": "Kunde inte starta en granskningsguide",
-  "d5120745cce8256c": "Servern kunde inte spara länken.",
-  "667d108ebefa3af9": "Den här datorn är inte ansluten.",
-  "6e8fb2ad5a9a0c33": "Den här anslutningen kan inte spara länkar på den datorn.",
-  "2f0435c42dfc6007": "De sparade länkarna kunde inte läsas.",
-  "c1c3217c81ef03f1": "Ett annat fönster ändrade länkarna hela tiden. Försök igen."
+  "9e91e9a77b664e4e": "Kunde inte starta en granskningsguide"
 }

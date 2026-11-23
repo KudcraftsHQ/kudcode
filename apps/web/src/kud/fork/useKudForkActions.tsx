@@ -1,6 +1,7 @@
 import { createContext, use } from "react";
 
 import type { KudForkActions } from "../shared/contract";
+import { createChildThread } from "./childThread";
 import { exploreDirections, forkWithBrief, reportBack, setManualParent } from "./forkJobs";
 
 // The work runs in module-level jobs (see forkJobs.ts), so the actions hold no React state and
@@ -10,6 +11,7 @@ export const KUD_FORK_ACTIONS: KudForkActions = {
   exploreDirections,
   reportBack,
   setManualParent,
+  createChildThread,
 };
 
 const KudForkActionsContext = createContext<KudForkActions>(KUD_FORK_ACTIONS);

@@ -53,14 +53,17 @@ const dispatchCommand = createEnvironmentCommand(connectionAtomRuntime, {
     request(ORCHESTRATION_V2_WS_METHODS.dispatchCommand, command),
 });
 
-const newCommandId = () => CommandId.make(randomUUID());
+export const newCommandId = () => CommandId.make(randomUUID());
 
-function failureMessage(result: AtomCommandResult<unknown, unknown>, fallback: string): string {
+export function failureMessage(
+  result: AtomCommandResult<unknown, unknown>,
+  fallback: string,
+): string {
   if (result._tag !== "Failure") return fallback;
   return thrownErrorMessage(squashAtomCommandFailure(result), m) ?? fallback;
 }
 
-async function dispatch(environmentId: EnvironmentId, command: OrchestrationV2Command) {
+export async function dispatch(environmentId: EnvironmentId, command: OrchestrationV2Command) {
   const result = await runAtomCommand(
     appAtomRegistry,
     dispatchCommand,
@@ -73,7 +76,7 @@ async function dispatch(environmentId: EnvironmentId, command: OrchestrationV2Co
   }
 }
 
-function assertCanOperate(environmentId: EnvironmentId) {
+export function assertCanOperate(environmentId: EnvironmentId) {
   if (!readEnvironmentScope(environmentId, AuthOrchestrationOperateScope)) {
     throw new Error(m(msg("This connection cannot change threads or projects.")));
   }
@@ -86,11 +89,11 @@ function supportsFreshContext(environmentId: EnvironmentId): boolean {
   );
 }
 
-function notify(title: string, description: string, type: "error" | "warning" = "error") {
+export function notify(title: string, description: string, type: "error" | "warning" = "error") {
   toastManager.add({ type, title, description });
 }
 
-function errorText(error: unknown): string {
+export function errorText(error: unknown): string {
   return error instanceof Error ? error.message : m(msg("Something went wrong."));
 }
 

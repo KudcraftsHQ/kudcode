@@ -14,12 +14,109 @@ import {
 } from "../../components/ui/dialog";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
+import { Switch } from "../../components/ui/switch";
 import { Textarea } from "../../components/ui/textarea";
 import type { CanvasThread } from "./canvasGraph.logic";
 
 const MIN_DIRECTIONS = 2;
 const MAX_DIRECTIONS = 4;
 const LINK_RESULTS_LIMIT = 50;
+
+export interface ChildThreadDraft {
+  readonly message: string;
+  readonly withBrief: boolean;
+}
+
+/** A fresh thread under a card, or a fork from its brief when the switch is on. */
+export function ChildThreadDialog({
+  parentTitle,
+  where,
+  initial,
+  onSubmit,
+  onClose,
+}: {
+  readonly parentTitle: string;
+  /** Project, machine and model, inherited from the parent. */
+  readonly where: string;
+  readonly initial: ChildThreadDraft | undefined;
+  readonly onSubmit: (draft: ChildThreadDraft, open: boolean) => void;
+  readonly onClose: () => void;
+}) {
+  const gt = useGT();
+  const id = useId();
+  const [message, setMessage] = useState(initial?.message ?? "");
+  const [withBrief, setWithBrief] = useState(initial?.withBrief ?? false);
+  // A brief needs a direction; a plain thread without a message starts idle.
+  const ready = !withBrief || message.trim() !== "";
+  const submit = (open: boolean) => {
+    if (ready) onSubmit({ message, withBrief }, open);
+  };
+
+  return (
+    <Dialog
+      open
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
+    >
+      <DialogPopup className="sm:max-w-lg">
+        <form
+          className="flex min-h-0 flex-col"
+          onSubmit={(event) => {
+            event.preventDefault();
+            submit(false);
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>
+              <T>New child thread</T>
+            </DialogTitle>
+            <DialogDescription>
+              {gt("A fresh thread under “{title}”.", { title: parentTitle })}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogPanel>
+            <div className="flex flex-col gap-3">
+              <Textarea
+                aria-label={gt("First message")}
+                rows={4}
+                autoFocus
+                placeholder={
+                  withBrief
+                    ? gt("What should the new thread do next?")
+                    : gt("What should the new thread do? Leave it empty to start it idle.")
+                }
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+                    event.preventDefault();
+                    event.currentTarget.form?.requestSubmit();
+                  }
+                }}
+              />
+              <div className="flex items-center gap-2">
+                <Switch id={`${id}-brief`} checked={withBrief} onCheckedChange={setWithBrief} />
+                <Label htmlFor={`${id}-brief`}>
+                  <T>Start from a brief of this thread</T>
+                </Label>
+              </div>
+              <p className="truncate text-muted-foreground text-xs">{where}</p>
+            </div>
+          </DialogPanel>
+          <DialogFooter>
+            <Button type="button" variant="outline" disabled={!ready} onClick={() => submit(true)}>
+              <T>Create and open</T>
+            </Button>
+            <Button type="submit" disabled={!ready}>
+              <T>Create</T>
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogPopup>
+    </Dialog>
+  );
+}
 
 /** One direction for "Fork with brief", or 2 to 4 for "Explore directions". */
 export function DirectionDialog({

@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "no computador que abriu esta página"
-      ]
+      "c": [" ", "no computador que abriu esta página"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· quem executar recebe este acesso"
-      ]
+      "c": [" ", "· quem executar recebe este acesso"]
     }
   ],
   "c54cc9c75db9dc58": "Aprove apenas um login que você acabou de iniciar.",
@@ -12670,6 +12664,10 @@
   "0e4b49c8203aae81": "Tempo esgotado aguardando a sessão autenticada após a inicialização.",
   "d7ffde2874d60d4f": "Informe um token de pareamento para continuar.",
   "5d18537f82794deb": "O ambiente local está desativado.",
+  "2a70b91382867eb0": "Uma thread nova sob “{title}”.",
+  "7894961fce3a683b": "Primeira mensagem",
+  "2be149339b617a4a": "O que a nova thread deve fazer em seguida?",
+  "95d164d98e9aff44": "O que a nova thread deve fazer? Deixe vazio para criá-la ociosa.",
   "4bc0a57fe3b94148": "Um resumo de “{title}”, depois um fork por direção, todos iniciados juntos.",
   "fd3be4798ba30546": "Um fork de “{title}” que começa com um resumo curto e a sua direção.",
   "c5c655af5f0f0cbe": "Direção {number}",
@@ -12678,6 +12676,10 @@
   "a782cce1afc28658": "Remover direção {number}",
   "c7fafcfb82b9b7b9": "{count, plural, one {Iniciar # fork} other {Iniciar # forks}}",
   "c21756bc0f1ea585": "Mostrar “{title}” como filha da thread que você escolher.",
+  "37d840dba3519940": "Nova thread filha",
+  "cef4d5e204b7bed8": "Começar com um resumo desta thread",
+  "c8bfedd612141fc0": "Criar e abrir",
+  "baaf07d893736ec8": "Criar",
   "0b4802dc9ab2dc9f": "Explorar direções",
   "cb826fc94d69805d": "Fork com resumo",
   "68c478c1aacbdb94": "Direção",
@@ -12690,9 +12692,11 @@
   "f56a782efbf4f600": "Vinculada sob “{title}”",
   "07e16d5d75da2a5d": "Não foi possível desvincular",
   "d8b199ed2c39cfe0": "Não foi possível vincular",
+  "cdb868bfd980d7db": "Não foi possível criar a thread",
   "530cd0abc8e59ed0": "Reportado à thread principal",
   "d4cf8b582f7496a3": "Não foi possível reportar",
   "b93f6908a888059d": "Vincular “{child}” sob “{parent}”?",
+  "d97f66ca4c3298c4": "{project} em {machine}, {model}",
   "9ca92f2f8b481bfd": "Navegação do canvas",
   "b957fc9acc355efc": "Layout do canvas",
   "e74d41767a0adc98": "Árvores",
@@ -12728,9 +12732,12 @@
   "2bb3b1aaf6a235db": "Mesmo PR que “{title}”",
   "1ffe9c6c9c0b0483": "Mesmo branch que “{title}” e mais {count}",
   "0771a668eb4b7c24": "Mesmo branch que “{title}”",
+  "35c0a6ab7bc78b52": "Criando thread…",
   "0c361770fe512f2c": "Ações da thread",
   "8ff1393290569b16": "Ocultar {count} subagentes",
   "b3d9f929227d56ed": "Mostrar {count} subagentes",
+  "942a5b9928b3d2d8": "Nova thread filha",
+  "cd2a0864b939c597": "Nova thread filha…",
   "6abdce7ea78497d6": "Fork com resumo…",
   "c89f668ba4057829": "Explorar direções…",
   "807707d4a33c603f": "Reportar à thread principal",
@@ -12748,6 +12755,10 @@
   "cd64d26f943fa9e8": "Fork com um resumo",
   "5f18181fb502c1a2": "Fork com resumo...",
   "2a7ff642459581f2": "Explorar direções...",
+  "8d3721caa61445d4": "Não foi possível criar a thread.",
+  "b44e53d84e480f6b": "A thread pai não está carregada neste cliente.",
+  "69e1016895468b81": "A thread foi criada, mas não vinculada",
+  "e64d15de917dc1a4": "Vincule-a sob a thread pai com “Vincular sob…”. {reason}",
   "298863d82706d076": "Cancelado.",
   "ead2ca80d4fac317": "O servidor recusou o comando.",
   "ffb1e427a1998200": "Não foi possível iniciar o fork a partir de um resumo",
@@ -12764,6 +12775,11 @@
   "a47225ce3e4be13c": "Uma conversa só pode ser vinculada a outra na mesma máquina.",
   "bb28679587c7e9c4": "Uma conversa não pode ser vinculada a si mesma.",
   "48df68bb091c712e": "Estas conversas já estão vinculadas no sentido inverso.",
+  "d5120745cce8256c": "O servidor não conseguiu salvar o vínculo.",
+  "667d108ebefa3af9": "Esta máquina não está conectada.",
+  "6e8fb2ad5a9a0c33": "Esta conexão não pode salvar vínculos nessa máquina.",
+  "2f0435c42dfc6007": "Não foi possível ler os vínculos salvos.",
+  "c1c3217c81ef03f1": "Outra janela continuou alterando os vínculos. Tente novamente.",
   "d5ef094f40aedece": "Entrada do terminal",
   "f7046b10d49caab6": "Histórico de rolagem do terminal",
   "24de858bbcf05f40": "Slide {number}",
@@ -12879,10 +12895,5 @@
   "27d76249d09eb69f": "Guia de revisão pronto",
   "faa3bb26abb39c93": "O guia de revisão falhou",
   "b7df38b7d8792d78": "Abrir guia",
-  "9e91e9a77b664e4e": "Não foi possível iniciar um guia de revisão",
-  "d5120745cce8256c": "O servidor não conseguiu salvar o vínculo.",
-  "667d108ebefa3af9": "Esta máquina não está conectada.",
-  "6e8fb2ad5a9a0c33": "Esta conexão não pode salvar vínculos nessa máquina.",
-  "2f0435c42dfc6007": "Não foi possível ler os vínculos salvos.",
-  "c1c3217c81ef03f1": "Outra janela continuou alterando os vínculos. Tente novamente."
+  "9e91e9a77b664e4e": "Não foi possível iniciar um guia de revisão"
 }

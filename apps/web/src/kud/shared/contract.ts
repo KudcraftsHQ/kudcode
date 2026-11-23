@@ -40,6 +40,16 @@ export interface KudForkActions {
   readonly exploreDirections: (
     input: KudForkFromInput & { readonly directions: ReadonlyArray<string> },
   ) => Promise<ReadonlyArray<ScopedThreadRef>>;
+  /**
+   * A fresh thread under `parent`, in its project, machine, workspace and model, linked to it in
+   * the link store. An empty message makes an idle thread. `withBrief` forks from a brief instead,
+   * with the message as the direction.
+   */
+  readonly createChildThread: (input: {
+    readonly parent: ScopedThreadRef;
+    readonly message: string;
+    readonly withBrief: boolean;
+  }) => Promise<ScopedThreadRef>;
   /** Send a fork's result back to its parent (`thread.merge_back`). */
   readonly reportBack: (child: ScopedThreadRef) => Promise<void>;
   /** Link a thread under another by hand (link store). `parent: null` unlinks. */

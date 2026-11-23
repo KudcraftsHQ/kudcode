@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "en el ordenador que abrió esta página"
-      ]
+      "c": [" ", "en el ordenador que abrió esta página"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· quien lo ejecute obtiene este acceso"
-      ]
+      "c": [" ", "· quien lo ejecute obtiene este acceso"]
     }
   ],
   "c54cc9c75db9dc58": "Aprueba solo un inicio de sesión que acabes de iniciar.",
@@ -12665,6 +12659,10 @@
   "0e4b49c8203aae81": "Se agotó el tiempo de espera de la sesión autenticada tras el arranque.",
   "d7ffde2874d60d4f": "Introduce un token de emparejamiento para continuar.",
   "5d18537f82794deb": "El entorno local está desactivado.",
+  "2a70b91382867eb0": "Un hilo nuevo bajo “{title}”.",
+  "7894961fce3a683b": "Primer mensaje",
+  "2be149339b617a4a": "¿Qué debe hacer el nuevo hilo a continuación?",
+  "95d164d98e9aff44": "¿Qué debe hacer el nuevo hilo? Déjalo vacío para crearlo inactivo.",
   "4bc0a57fe3b94148": "Un resumen de “{title}” y luego una bifurcación por dirección, todas iniciadas a la vez.",
   "fd3be4798ba30546": "Una bifurcación de “{title}” que parte de un breve resumen y de tu dirección.",
   "c5c655af5f0f0cbe": "Dirección {number}",
@@ -12673,6 +12671,10 @@
   "a782cce1afc28658": "Quitar dirección {number}",
   "c7fafcfb82b9b7b9": "{count, plural, one {Iniciar # bifurcación} other {Iniciar # bifurcaciones}}",
   "c21756bc0f1ea585": "Mostrar “{title}” como hijo del hilo que elijas.",
+  "37d840dba3519940": "Nuevo hilo hijo",
+  "cef4d5e204b7bed8": "Empezar con un resumen de este hilo",
+  "c8bfedd612141fc0": "Crear y abrir",
+  "baaf07d893736ec8": "Crear",
   "0b4802dc9ab2dc9f": "Explorar direcciones",
   "cb826fc94d69805d": "Bifurcar con resumen",
   "68c478c1aacbdb94": "Dirección",
@@ -12685,9 +12687,11 @@
   "f56a782efbf4f600": "Vinculado bajo “{title}”",
   "07e16d5d75da2a5d": "No se pudo desvincular",
   "d8b199ed2c39cfe0": "No se pudo vincular",
+  "cdb868bfd980d7db": "No se pudo crear el hilo",
   "530cd0abc8e59ed0": "Informado al hilo principal",
   "d4cf8b582f7496a3": "No se pudo informar",
   "b93f6908a888059d": "¿Vincular “{child}” bajo “{parent}”?",
+  "d97f66ca4c3298c4": "{project} en {machine}, {model}",
   "9ca92f2f8b481bfd": "Ruta de navegación del lienzo",
   "b957fc9acc355efc": "Diseño del lienzo",
   "e74d41767a0adc98": "Árboles",
@@ -12723,9 +12727,12 @@
   "2bb3b1aaf6a235db": "Mismo PR que «{title}»",
   "1ffe9c6c9c0b0483": "Misma rama que «{title}» y {count} más",
   "0771a668eb4b7c24": "Misma rama que «{title}»",
+  "35c0a6ab7bc78b52": "Creando hilo…",
   "0c361770fe512f2c": "Acciones del hilo",
   "8ff1393290569b16": "Ocultar {count} subagentes",
   "b3d9f929227d56ed": "Mostrar {count} subagentes",
+  "942a5b9928b3d2d8": "Nuevo hilo hijo",
+  "cd2a0864b939c597": "Nuevo hilo hijo…",
   "6abdce7ea78497d6": "Bifurcar con resumen…",
   "c89f668ba4057829": "Explorar direcciones…",
   "807707d4a33c603f": "Informar al hilo principal",
@@ -12743,6 +12750,10 @@
   "cd64d26f943fa9e8": "Bifurcar con un resumen",
   "5f18181fb502c1a2": "Bifurcar con resumen...",
   "2a7ff642459581f2": "Explorar direcciones...",
+  "8d3721caa61445d4": "No se pudo crear el hilo.",
+  "b44e53d84e480f6b": "El hilo padre no está cargado en este cliente.",
+  "69e1016895468b81": "El hilo se creó pero no se vinculó",
+  "e64d15de917dc1a4": "Vincúlalo bajo su padre con “Vincular bajo…”. {reason}",
   "298863d82706d076": "Cancelado.",
   "ead2ca80d4fac317": "El servidor rechazó el comando.",
   "ffb1e427a1998200": "La bifurcación no pudo empezar desde un resumen",
@@ -12759,6 +12770,11 @@
   "a47225ce3e4be13c": "Un hilo solo se puede vincular bajo un hilo de la misma máquina.",
   "bb28679587c7e9c4": "Un hilo no se puede vincular bajo sí mismo.",
   "48df68bb091c712e": "Estos hilos ya están vinculados al revés.",
+  "d5120745cce8256c": "El servidor no pudo guardar el vínculo.",
+  "667d108ebefa3af9": "Esta máquina no está conectada.",
+  "6e8fb2ad5a9a0c33": "Esta conexión no puede guardar vínculos en esa máquina.",
+  "2f0435c42dfc6007": "No se pudieron leer los vínculos guardados.",
+  "c1c3217c81ef03f1": "Otra ventana siguió cambiando los vínculos. Inténtalo de nuevo.",
   "d5ef094f40aedece": "Entrada de la terminal",
   "f7046b10d49caab6": "Historial de desplazamiento de la terminal",
   "24de858bbcf05f40": "Diapositiva {number}",
@@ -12874,10 +12890,5 @@
   "27d76249d09eb69f": "Guía de revisión lista",
   "faa3bb26abb39c93": "Falló la guía de revisión",
   "b7df38b7d8792d78": "Abrir guía",
-  "9e91e9a77b664e4e": "No se pudo iniciar una guía de revisión",
-  "d5120745cce8256c": "El servidor no pudo guardar el vínculo.",
-  "667d108ebefa3af9": "Esta máquina no está conectada.",
-  "6e8fb2ad5a9a0c33": "Esta conexión no puede guardar vínculos en esa máquina.",
-  "2f0435c42dfc6007": "No se pudieron leer los vínculos guardados.",
-  "c1c3217c81ef03f1": "Otra ventana siguió cambiando los vínculos. Inténtalo de nuevo."
+  "9e91e9a77b664e4e": "No se pudo iniciar una guía de revisión"
 }

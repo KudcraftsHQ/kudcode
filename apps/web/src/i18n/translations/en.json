@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "on the computer that opened this page"
-      ]
+      "c": [" ", "on the computer that opened this page"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· whoever runs it gets this access"
-      ]
+      "c": [" ", "· whoever runs it gets this access"]
     }
   ],
   "c54cc9c75db9dc58": "Only approve a sign-in you just started.",
@@ -12680,6 +12674,10 @@
   "0e4b49c8203aae81": "Timed out waiting for authenticated session after bootstrap.",
   "d7ffde2874d60d4f": "Enter a pairing token to continue.",
   "5d18537f82794deb": "The local environment is disabled.",
+  "2a70b91382867eb0": "A fresh thread under “{title}”.",
+  "7894961fce3a683b": "First message",
+  "2be149339b617a4a": "What should the new thread do next?",
+  "95d164d98e9aff44": "What should the new thread do? Leave it empty to start it idle.",
   "4bc0a57fe3b94148": "One brief of “{title}”, then one fork per direction, all started together.",
   "fd3be4798ba30546": "A fork of “{title}” that starts from a short brief and your direction.",
   "c5c655af5f0f0cbe": "Direction {number}",
@@ -12688,6 +12686,10 @@
   "a782cce1afc28658": "Remove direction {number}",
   "c7fafcfb82b9b7b9": "{count, plural, one {Start # fork} other {Start # forks}}",
   "c21756bc0f1ea585": "Show “{title}” as a child of the thread you pick.",
+  "37d840dba3519940": "New child thread",
+  "cef4d5e204b7bed8": "Start from a brief of this thread",
+  "c8bfedd612141fc0": "Create and open",
+  "baaf07d893736ec8": "Create",
   "0b4802dc9ab2dc9f": "Explore directions",
   "cb826fc94d69805d": "Fork with brief",
   "68c478c1aacbdb94": "Direction",
@@ -12700,9 +12702,11 @@
   "f56a782efbf4f600": "Linked under “{title}”",
   "07e16d5d75da2a5d": "Couldn’t unlink",
   "d8b199ed2c39cfe0": "Couldn’t link",
+  "cdb868bfd980d7db": "Couldn’t create the thread",
   "530cd0abc8e59ed0": "Reported back to the parent",
   "d4cf8b582f7496a3": "Couldn’t report back",
   "b93f6908a888059d": "Link “{child}” under “{parent}”?",
+  "d97f66ca4c3298c4": "{project} on {machine}, {model}",
   "9ca92f2f8b481bfd": "Canvas breadcrumb",
   "b957fc9acc355efc": "Canvas layout",
   "e74d41767a0adc98": "Trees",
@@ -12738,9 +12742,12 @@
   "2bb3b1aaf6a235db": "Same PR as “{title}”",
   "1ffe9c6c9c0b0483": "Same branch as “{title}” and {count} more",
   "0771a668eb4b7c24": "Same branch as “{title}”",
+  "35c0a6ab7bc78b52": "Creating thread…",
   "0c361770fe512f2c": "Thread actions",
   "8ff1393290569b16": "Hide {count} subagents",
   "b3d9f929227d56ed": "Show {count} subagents",
+  "942a5b9928b3d2d8": "New child thread",
+  "cd2a0864b939c597": "New child thread…",
   "6abdce7ea78497d6": "Fork with brief…",
   "c89f668ba4057829": "Explore directions…",
   "807707d4a33c603f": "Report back to parent",
@@ -12758,6 +12765,10 @@
   "cd64d26f943fa9e8": "Fork with a brief",
   "5f18181fb502c1a2": "Fork with brief...",
   "2a7ff642459581f2": "Explore directions...",
+  "8d3721caa61445d4": "The thread could not be created.",
+  "b44e53d84e480f6b": "The parent thread is not loaded on this client.",
+  "69e1016895468b81": "The thread was created but not linked",
+  "e64d15de917dc1a4": "Link it under its parent with “Link under…”. {reason}",
   "298863d82706d076": "Cancelled.",
   "ead2ca80d4fac317": "The server rejected the command.",
   "ffb1e427a1998200": "The fork could not start from a brief",
@@ -12774,6 +12785,11 @@
   "a47225ce3e4be13c": "A thread can only be linked under a thread on the same machine.",
   "bb28679587c7e9c4": "A thread cannot be linked under itself.",
   "48df68bb091c712e": "These threads are already linked the other way round.",
+  "d5120745cce8256c": "The server could not save the link.",
+  "667d108ebefa3af9": "This machine is not connected.",
+  "6e8fb2ad5a9a0c33": "This connection cannot save links on that machine.",
+  "2f0435c42dfc6007": "The saved links could not be read.",
+  "c1c3217c81ef03f1": "Another window kept changing the links. Try again.",
   "d5ef094f40aedece": "Terminal input",
   "f7046b10d49caab6": "Terminal scrollback",
   "24de858bbcf05f40": "Slide {number}",
@@ -12888,10 +12904,5 @@
   "27d76249d09eb69f": "Review guide ready",
   "faa3bb26abb39c93": "Review guide failed",
   "b7df38b7d8792d78": "Open guide",
-  "9e91e9a77b664e4e": "Could not start a review guide",
-  "d5120745cce8256c": "The server could not save the link.",
-  "667d108ebefa3af9": "This machine is not connected.",
-  "6e8fb2ad5a9a0c33": "This connection cannot save links on that machine.",
-  "2f0435c42dfc6007": "The saved links could not be read.",
-  "c1c3217c81ef03f1": "Another window kept changing the links. Try again."
+  "9e91e9a77b664e4e": "Could not start a review guide"
 }

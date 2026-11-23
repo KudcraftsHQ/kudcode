@@ -11,6 +11,7 @@ import {
   GitBranchIcon,
   LinkIcon,
   MessagesSquareIcon,
+  PlusIcon,
   RocketIcon,
   WorkflowIcon,
   type LucideIcon,
@@ -194,17 +195,18 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
   const modelLabel = model?.shortName ?? model?.name ?? modelSlug;
   const age = formatRelativeTimeLabel(thread.updatedAt, Date.parse(`${nowMinute}Z`));
   // Servers send no message summary in shells yet, so the goal or last error stands in.
-  const preview =
-    previewLine(thread.source.latestVisibleMessage?.text) ??
-    previewLine(thread.goal?.objective) ??
-    previewLine(thread.runtime?.lastError ?? undefined);
+  const preview = item.pending
+    ? gt("Creating thread…")
+    : (previewLine(thread.source.latestVisibleMessage?.text) ??
+      previewLine(thread.goal?.objective) ??
+      previewLine(thread.runtime?.lastError ?? undefined));
 
   const cancelPress = () => {
     if (press.current !== null) window.clearTimeout(press.current.timer);
     press.current = null;
   };
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== "touch") return;
+    if (event.pointerType !== "touch" || item.pending) return;
     cancelPress();
     press.current = {
       x: event.clientX,
@@ -231,6 +233,7 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
         "hover:border-ring/50 has-focus-visible:border-ring has-focus-visible:ring-2 has-focus-visible:ring-inset has-focus-visible:ring-ring/40",
         node.selected && "border-ring ring-2 ring-inset ring-ring/40",
         item.settled && !node.selected && "bg-muted/40 text-muted-foreground",
+        item.pending && "border-dashed",
       )}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
@@ -245,7 +248,7 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
       onContextMenu={(event) => {
         event.preventDefault();
         cancelPress();
-        setMenuOpen(true);
+        if (!item.pending) setMenuOpen(true);
       }}
     >
       <Handle
@@ -262,11 +265,12 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
         <button
           type="button"
           className="min-w-0 flex-1 text-left font-medium text-sm leading-5 outline-hidden after:absolute after:inset-0 after:rounded-xl"
+          disabled={item.pending}
           onClick={() => interactions.openThread(threadKey)}
         >
           <span className={preview === null ? "line-clamp-2" : "line-clamp-1"}>{thread.title}</span>
         </button>
-        <span className="relative z-10 -my-1 -me-1.5 shrink-0">
+        <span className={cn("relative z-10 -my-1 -me-1.5 shrink-0", item.pending && "invisible")}>
           <Menu open={menuOpen} onOpenChange={setMenuOpen}>
             <MenuTrigger
               render={<Button variant="ghost-muted" size="icon-xs" />}
@@ -277,6 +281,11 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
               <EllipsisIcon />
             </MenuTrigger>
             <MenuPopup align="end">
+              <MenuItem onClick={() => interactions.openDialog("child", threadKey)}>
+                <PlusIcon />
+                <T>New child thread…</T>
+              </MenuItem>
+              <MenuSeparator />
               <MenuItem onClick={() => interactions.openThread(threadKey)}>
                 <T>Open thread</T>
               </MenuItem>
@@ -354,6 +363,38 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
         ) : null}
         <span className="shrink-0 tabular-nums">{age}</span>
       </div>
+      {item.pending ? null : (
+        <span
+          className={cn(
+            // A solid backdrop, so the edge it sits on never shows through the outline button.
+            "absolute z-10 rounded-full bg-background",
+            outline
+              ? "bottom-0 left-4 -translate-x-1/2 translate-y-3/4"
+              : "top-1/2 right-0 translate-x-1/2 -translate-y-1/2",
+            // Hover only where there is hover; a selected card always shows it, touch included.
+            // In the outline it hangs a little lower, clear of the footer line.
+            node.selected ? "visible" : "invisible group-hover/node:visible",
+          )}
+        >
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="icon-sm-pill"
+                  aria-label={gt("New child thread")}
+                  onClick={() => interactions.openDialog("child", threadKey)}
+                />
+              }
+            >
+              <PlusIcon />
+            </TooltipTrigger>
+            <TooltipPopup side={outline ? "bottom" : "right"}>
+              <T>New child thread</T>
+            </TooltipPopup>
+          </Tooltip>
+        </span>
+      )}
       <Handle
         type="source"
         position={outline ? Position.Bottom : Position.Right}

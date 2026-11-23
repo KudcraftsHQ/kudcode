@@ -3202,10 +3202,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "auf dem Computer, der diese Seite geöffnet hat"
-      ]
+      "c": [" ", "auf dem Computer, der diese Seite geöffnet hat"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3217,10 +3214,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· wer es ausführt, erhält diesen Zugriff"
-      ]
+      "c": [" ", "· wer es ausführt, erhält diesen Zugriff"]
     }
   ],
   "c54cc9c75db9dc58": "Genehmige nur eine Anmeldung, die du gerade selbst gestartet hast.",
@@ -12672,6 +12666,10 @@
   "0e4b49c8203aae81": "Zeitüberschreitung beim Warten auf eine authentifizierte Sitzung nach dem Bootstrap.",
   "d7ffde2874d60d4f": "Gib ein Kopplungstoken ein, um fortzufahren.",
   "5d18537f82794deb": "Die lokale Umgebung ist deaktiviert.",
+  "2a70b91382867eb0": "Ein neuer Thread unter „{title}“.",
+  "7894961fce3a683b": "Erste Nachricht",
+  "2be149339b617a4a": "Was soll der neue Thread als Nächstes tun?",
+  "95d164d98e9aff44": "Was soll der neue Thread tun? Leer lassen, um ihn ohne Nachricht zu starten.",
   "4bc0a57fe3b94148": "Ein Briefing zu „{title}“, dann ein Fork pro Richtung, alle zusammen gestartet.",
   "fd3be4798ba30546": "Ein Fork von „{title}“, der mit einem kurzen Briefing und deiner Richtung startet.",
   "c5c655af5f0f0cbe": "Richtung {number}",
@@ -12680,6 +12678,10 @@
   "a782cce1afc28658": "Richtung {number} entfernen",
   "c7fafcfb82b9b7b9": "{count, plural, one {# Fork starten} other {# Forks starten}}",
   "c21756bc0f1ea585": "„{title}“ als Unterelement des gewählten Threads anzeigen.",
+  "37d840dba3519940": "Neuer Unter-Thread",
+  "cef4d5e204b7bed8": "Mit einem Briefing dieses Threads starten",
+  "c8bfedd612141fc0": "Erstellen und öffnen",
+  "baaf07d893736ec8": "Erstellen",
   "0b4802dc9ab2dc9f": "Richtungen erkunden",
   "cb826fc94d69805d": "Mit Briefing forken",
   "68c478c1aacbdb94": "Richtung",
@@ -12692,9 +12694,11 @@
   "f56a782efbf4f600": "Unter „{title}“ verknüpft",
   "07e16d5d75da2a5d": "Trennen fehlgeschlagen",
   "d8b199ed2c39cfe0": "Verknüpfen fehlgeschlagen",
+  "cdb868bfd980d7db": "Thread konnte nicht erstellt werden",
   "530cd0abc8e59ed0": "An übergeordneten Thread zurückgemeldet",
   "d4cf8b582f7496a3": "Rückmeldung fehlgeschlagen",
   "b93f6908a888059d": "„{child}“ unter „{parent}“ verknüpfen?",
+  "d97f66ca4c3298c4": "{project} auf {machine}, {model}",
   "9ca92f2f8b481bfd": "Canvas-Breadcrumb",
   "b957fc9acc355efc": "Canvas-Layout",
   "e74d41767a0adc98": "Bäume",
@@ -12730,9 +12734,12 @@
   "2bb3b1aaf6a235db": "Gleicher PR wie „{title}“",
   "1ffe9c6c9c0b0483": "Gleicher Branch wie „{title}“ und {count} weitere",
   "0771a668eb4b7c24": "Gleicher Branch wie „{title}“",
+  "35c0a6ab7bc78b52": "Thread wird erstellt…",
   "0c361770fe512f2c": "Thread-Aktionen",
   "8ff1393290569b16": "{count} Subagenten ausblenden",
   "b3d9f929227d56ed": "{count} Subagenten einblenden",
+  "942a5b9928b3d2d8": "Neuer Unter-Thread",
+  "cd2a0864b939c597": "Neuer Unter-Thread…",
   "6abdce7ea78497d6": "Mit Briefing forken…",
   "c89f668ba4057829": "Richtungen erkunden…",
   "807707d4a33c603f": "An übergeordneten Thread melden",
@@ -12750,6 +12757,10 @@
   "cd64d26f943fa9e8": "Mit Briefing forken",
   "5f18181fb502c1a2": "Mit Briefing forken...",
   "2a7ff642459581f2": "Richtungen erkunden...",
+  "8d3721caa61445d4": "Der Thread konnte nicht erstellt werden.",
+  "b44e53d84e480f6b": "Der übergeordnete Thread ist in diesem Client nicht geladen.",
+  "69e1016895468b81": "Der Thread wurde erstellt, aber nicht verknüpft",
+  "e64d15de917dc1a4": "Verknüpfe ihn mit „Verknüpfen unter…“ unter seinem übergeordneten Thread. {reason}",
   "298863d82706d076": "Abgebrochen.",
   "ead2ca80d4fac317": "Der Server hat den Befehl abgelehnt.",
   "ffb1e427a1998200": "Der Fork konnte nicht mit einem Briefing starten",
@@ -12766,6 +12777,11 @@
   "a47225ce3e4be13c": "Ein Thread kann nur unter einem Thread auf demselben Rechner verknüpft werden.",
   "bb28679587c7e9c4": "Ein Thread kann nicht unter sich selbst verknüpft werden.",
   "48df68bb091c712e": "Diese Threads sind bereits andersherum verknüpft.",
+  "d5120745cce8256c": "Der Server konnte die Verknüpfung nicht speichern.",
+  "667d108ebefa3af9": "Dieser Rechner ist nicht verbunden.",
+  "6e8fb2ad5a9a0c33": "Diese Verbindung kann auf diesem Rechner keine Verknüpfungen speichern.",
+  "2f0435c42dfc6007": "Die gespeicherten Verknüpfungen konnten nicht gelesen werden.",
+  "c1c3217c81ef03f1": "Ein anderes Fenster hat die Verknüpfungen ständig geändert. Versuche es erneut.",
   "d5ef094f40aedece": "Terminal-Eingabe",
   "f7046b10d49caab6": "Terminal-Verlauf",
   "24de858bbcf05f40": "Folie {number}",
@@ -12879,10 +12895,5 @@
   "27d76249d09eb69f": "Review-Leitfaden bereit",
   "faa3bb26abb39c93": "Review-Leitfaden fehlgeschlagen",
   "b7df38b7d8792d78": "Leitfaden öffnen",
-  "9e91e9a77b664e4e": "Review-Leitfaden konnte nicht gestartet werden",
-  "d5120745cce8256c": "Der Server konnte die Verknüpfung nicht speichern.",
-  "667d108ebefa3af9": "Dieser Rechner ist nicht verbunden.",
-  "6e8fb2ad5a9a0c33": "Diese Verbindung kann auf diesem Rechner keine Verknüpfungen speichern.",
-  "2f0435c42dfc6007": "Die gespeicherten Verknüpfungen konnten nicht gelesen werden.",
-  "c1c3217c81ef03f1": "Ein anderes Fenster hat die Verknüpfungen ständig geändert. Versuche es erneut."
+  "9e91e9a77b664e4e": "Review-Leitfaden konnte nicht gestartet werden"
 }

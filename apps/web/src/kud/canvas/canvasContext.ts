@@ -3,7 +3,7 @@ import { createContext, use } from "react";
 
 import type { ProviderInstanceEntry } from "../../providerInstances";
 
-export type CanvasDialogKind = "fork" | "explore" | "link";
+export type CanvasDialogKind = "fork" | "explore" | "link" | "child";
 
 /** What a node can ask of the canvas around it. */
 export interface CanvasInteractions {

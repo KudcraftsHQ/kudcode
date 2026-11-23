@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "sur l’ordinateur qui a ouvert cette page"
-      ]
+      "c": [" ", "sur l’ordinateur qui a ouvert cette page"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· quiconque l’exécute obtient cet accès"
-      ]
+      "c": [" ", "· quiconque l’exécute obtient cet accès"]
     }
   ],
   "c54cc9c75db9dc58": "N’approuvez qu’une connexion que vous venez de lancer.",
@@ -12670,6 +12664,10 @@
   "0e4b49c8203aae81": "Délai dépassé en attendant la session authentifiée après l’amorçage.",
   "d7ffde2874d60d4f": "Saisissez un jeton d’appairage pour continuer.",
   "5d18537f82794deb": "L’environnement local est désactivé.",
+  "2a70b91382867eb0": "Un nouveau fil sous « {title} ».",
+  "7894961fce3a683b": "Premier message",
+  "2be149339b617a4a": "Que doit faire le nouveau fil ensuite ?",
+  "95d164d98e9aff44": "Que doit faire le nouveau fil ? Laissez vide pour le créer inactif.",
   "4bc0a57fe3b94148": "Un brief de « {title} », puis un fork par piste, tous lancés ensemble.",
   "fd3be4798ba30546": "Un fork de « {title} » qui part d’un court brief et de votre piste.",
   "c5c655af5f0f0cbe": "Piste {number}",
@@ -12678,6 +12676,10 @@
   "a782cce1afc28658": "Retirer la piste {number}",
   "c7fafcfb82b9b7b9": "{count, plural, one {Lancer # fork} other {Lancer # forks}}",
   "c21756bc0f1ea585": "Afficher « {title} » comme enfant du fil choisi.",
+  "37d840dba3519940": "Nouveau fil enfant",
+  "cef4d5e204b7bed8": "Partir d’un brief de ce fil",
+  "c8bfedd612141fc0": "Créer et ouvrir",
+  "baaf07d893736ec8": "Créer",
   "0b4802dc9ab2dc9f": "Explorer des pistes",
   "cb826fc94d69805d": "Forker avec un brief",
   "68c478c1aacbdb94": "Piste",
@@ -12690,9 +12692,11 @@
   "f56a782efbf4f600": "Rattaché à « {title} »",
   "07e16d5d75da2a5d": "Détachement impossible",
   "d8b199ed2c39cfe0": "Rattachement impossible",
+  "cdb868bfd980d7db": "Impossible de créer le fil",
   "530cd0abc8e59ed0": "Retour envoyé au fil parent",
   "d4cf8b582f7496a3": "Retour impossible",
   "b93f6908a888059d": "Rattacher « {child} » à « {parent} » ?",
+  "d97f66ca4c3298c4": "{project} sur {machine}, {model}",
   "9ca92f2f8b481bfd": "Fil d’Ariane du canevas",
   "b957fc9acc355efc": "Disposition du canevas",
   "e74d41767a0adc98": "Arbres",
@@ -12728,9 +12732,12 @@
   "2bb3b1aaf6a235db": "Même PR que « {title} »",
   "1ffe9c6c9c0b0483": "Même branche que « {title} » et {count} autres",
   "0771a668eb4b7c24": "Même branche que « {title} »",
+  "35c0a6ab7bc78b52": "Création du fil…",
   "0c361770fe512f2c": "Actions du fil",
   "8ff1393290569b16": "Masquer {count} sous-agents",
   "b3d9f929227d56ed": "Afficher {count} sous-agents",
+  "942a5b9928b3d2d8": "Nouveau fil enfant",
+  "cd2a0864b939c597": "Nouveau fil enfant…",
   "6abdce7ea78497d6": "Forker avec un brief…",
   "c89f668ba4057829": "Explorer des pistes…",
   "807707d4a33c603f": "Faire un retour au fil parent",
@@ -12748,6 +12755,10 @@
   "cd64d26f943fa9e8": "Fork avec un résumé",
   "5f18181fb502c1a2": "Fork avec résumé...",
   "2a7ff642459581f2": "Explorer des directions...",
+  "8d3721caa61445d4": "Le fil n’a pas pu être créé.",
+  "b44e53d84e480f6b": "Le fil parent n’est pas chargé dans ce client.",
+  "69e1016895468b81": "Le fil a été créé mais pas lié",
+  "e64d15de917dc1a4": "Rattachez-le à son parent avec « Rattacher à… ». {reason}",
   "298863d82706d076": "Annulé.",
   "ead2ca80d4fac317": "Le serveur a refusé la commande.",
   "ffb1e427a1998200": "Le fork n'a pas pu partir d'un résumé",
@@ -12764,6 +12775,11 @@
   "a47225ce3e4be13c": "Un fil ne peut être rattaché qu'à un fil de la même machine.",
   "bb28679587c7e9c4": "Un fil ne peut pas être rattaché à lui-même.",
   "48df68bb091c712e": "Ces fils sont déjà liés dans l'autre sens.",
+  "d5120745cce8256c": "Le serveur n'a pas pu enregistrer le lien.",
+  "667d108ebefa3af9": "Cette machine n'est pas connectée.",
+  "6e8fb2ad5a9a0c33": "Cette connexion ne peut pas enregistrer de liens sur cette machine.",
+  "2f0435c42dfc6007": "Les liens enregistrés n'ont pas pu être lus.",
+  "c1c3217c81ef03f1": "Une autre fenêtre modifiait sans cesse les liens. Réessaie.",
   "d5ef094f40aedece": "Saisie du terminal",
   "f7046b10d49caab6": "Historique du terminal",
   "24de858bbcf05f40": "Diapositive {number}",
@@ -12879,10 +12895,5 @@
   "27d76249d09eb69f": "Guide de revue prêt",
   "faa3bb26abb39c93": "Échec du guide de revue",
   "b7df38b7d8792d78": "Ouvrir le guide",
-  "9e91e9a77b664e4e": "Impossible de démarrer un guide de revue",
-  "d5120745cce8256c": "Le serveur n'a pas pu enregistrer le lien.",
-  "667d108ebefa3af9": "Cette machine n'est pas connectée.",
-  "6e8fb2ad5a9a0c33": "Cette connexion ne peut pas enregistrer de liens sur cette machine.",
-  "2f0435c42dfc6007": "Les liens enregistrés n'ont pas pu être lus.",
-  "c1c3217c81ef03f1": "Une autre fenêtre modifiait sans cesse les liens. Réessaie."
+  "9e91e9a77b664e4e": "Impossible de démarrer un guide de revue"
 }
