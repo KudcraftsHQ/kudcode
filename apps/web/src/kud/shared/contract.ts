@@ -1,7 +1,8 @@
 // Kud Code: the contract between the canvas (apps/web/src/kud/canvas) and the fork actions
 // (apps/web/src/kud/fork). The canvas reads links and calls actions through this file only, so the
 // two can be built and rebased independently.
-import type { ScopedThreadRef, ThreadId } from "@t3tools/contracts";
+import type { EnvironmentId, ScopedThreadRef, ThreadId } from "@t3tools/contracts";
+import { createContext } from "react";
 
 /**
  * Thread tag that records a parent the user linked by hand: `kud:parent:<threadId>`. Tags hold at
@@ -47,3 +48,35 @@ export interface KudForkActions {
     parent: ScopedThreadRef | null,
   ) => Promise<void>;
 }
+
+/**
+ * A link the user made by hand (or accepted), kept in Kud Code's link store: one JSON document per
+ * server, shared by every Kud Code client of that server. Replaces the `kud:parent:` tag, which is
+ * still read for links made before the store existed.
+ * @public
+ */
+export interface KudManualLink {
+  readonly environmentId: EnvironmentId;
+  readonly parentThreadId: ThreadId;
+  readonly childThreadId: ThreadId;
+  readonly label?: string;
+  readonly createdAt: string;
+}
+
+/**
+ * The manual links of every connected environment, live. Implemented in `apps/web/src/kud/links`;
+ * the canvas reads it through this context so the two can be built apart.
+ * @public
+ */
+export interface KudManualLinks {
+  /** Keyed by `scopedThreadKey` of the child. */
+  readonly byChild: ReadonlyMap<string, KudManualLink>;
+  /** False until every connected environment's store has loaded once. */
+  readonly loaded: boolean;
+}
+
+/** @public */
+export const EMPTY_KUD_MANUAL_LINKS: KudManualLinks = { byChild: new Map(), loaded: false };
+
+/** @public */
+export const KudManualLinksContext = createContext<KudManualLinks>(EMPTY_KUD_MANUAL_LINKS);
