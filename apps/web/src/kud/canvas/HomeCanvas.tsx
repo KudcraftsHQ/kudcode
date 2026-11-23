@@ -27,7 +27,7 @@ import {
 } from "@xyflow/react";
 import { T, useGT, useMessages } from "gt-react";
 import { FolderTreeIcon, ListFilterIcon, NetworkIcon, ScanIcon } from "lucide-react";
-import { use, useEffect, useRef, useState } from "react";
+import { use, useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { NoProjectsHero } from "../../components/NoProjectsHero";
 import { Button } from "../../components/ui/button";
@@ -424,16 +424,30 @@ function CanvasView({
 
   const focusLaidOut = focus !== null && nodes.some((node) => node.id === focus.key);
   // Runs once per new card: the placeholder it waits for leaves when the real thread arrives.
+  // Reads the latest canvas width without re-scrolling on every resize.
+  const scrollToFocus = useEffectEvent((parentKey: string, key: string) => {
+    // At the current zoom: a queued fitView would wait for every card to be measured.
+    const bounds = reactFlow.getNodesBounds([parentKey, key]);
+    const zoom = reactFlow.getZoom();
+    const gutter = gutterFor(width);
+    if (bounds.width * zoom + gutter * 2 <= width) {
+      void reactFlow.setCenter(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, {
+        zoom,
+        duration: 250,
+      });
+      return;
+    }
+    // Too wide to centre (phones): line the parent up with the left gutter instead of cutting it off.
+    void reactFlow.setCenter(bounds.x + (width / 2 - gutter) / zoom, bounds.y + bounds.height / 2, {
+      zoom,
+      duration: 250,
+    });
+  });
   // oxlint-disable-next-line t3code/no-unreasoned-state-sync -- scrolls React Flow's viewport to a new card once it is on the canvas
   useEffect(() => {
     if (!focusLaidOut || focus === null) return;
-    // Centred at the current zoom: a queued fitView would wait for every card to be measured.
-    const bounds = reactFlow.getNodesBounds([focus.parentKey, focus.key]);
-    void reactFlow.setCenter(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2, {
-      zoom: reactFlow.getZoom(),
-      duration: 250,
-    });
-  }, [focusLaidOut, focus, reactFlow]);
+    scrollToFocus(focus.parentKey, focus.key);
+  }, [focusLaidOut, focus]);
 
   const refOf = (item: CanvasThread) => scopeThreadRef(item.thread.environmentId, item.thread.id);
   const errorDescription = (error: unknown) =>
