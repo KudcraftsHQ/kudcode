@@ -18,6 +18,7 @@ import {
   DEV_PROXIED_PATH_PREFIXES,
 } from "@t3tools/shared/devProxy";
 
+import { isKudCodeBuild, KUD_IDENTITY } from "@t3tools/shared/kudIdentity";
 import { loadRepoEnv } from "../../scripts/lib/public-config";
 import { resolveTaggedSourceVersion } from "../../scripts/lib/tagged-source-version";
 import { thirdPartyLicensesPlugin } from "../../scripts/lib/third-party-licenses";
@@ -286,7 +287,8 @@ function bootstrapTitlePlugin(): Plugin {
         hostedAppChannel: configuredHostedAppChannel,
         development,
       });
-      const title = formatAppDisplayName({ baseName: "T3 Code", stageLabel });
+      const baseName = isKudCodeBuild(process.env) ? KUD_IDENTITY.baseName : "T3 Code";
+      const title = formatAppDisplayName({ baseName, stageLabel });
       return html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
     },
   };
@@ -374,6 +376,7 @@ export default defineConfig(({ command }) => {
       ),
       "import.meta.env.VITE_RELEASE_CHANNEL": JSON.stringify(configuredReleaseChannel),
       "import.meta.env.APP_VERSION": JSON.stringify(configuredAppVersion),
+      __KUD_CODE__: JSON.stringify(isKudCodeBuild(process.env)),
     },
     resolve: {
       tsconfigPaths: true,

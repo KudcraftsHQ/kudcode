@@ -3,9 +3,15 @@
 // two can be built and rebased independently.
 import type { ScopedThreadRef, ThreadId } from "@t3tools/contracts";
 
-/** Thread tag that records a parent the user linked by hand: `kud:parent:<threadId>`. */
+/**
+ * Thread tag that records a parent the user linked by hand: `kud:parent:<threadId>`. Tags hold at
+ * most 64 characters, so `setManualParent` refuses a parent id longer than 53 instead of storing
+ * a shortened one: the tag always holds the whole id.
+ * @public
+ */
 export const KUD_PARENT_TAG_PREFIX = "kud:parent:";
 
+/** @public */
 export function kudParentTag(parentThreadId: ThreadId): string {
   return `${KUD_PARENT_TAG_PREFIX}${parentThreadId}`;
 }
@@ -36,5 +42,8 @@ export interface KudForkActions {
   /** Send a fork's result back to its parent (`thread.merge_back`). */
   readonly reportBack: (child: ScopedThreadRef) => Promise<void>;
   /** Link a thread under another by hand (tag). `parent: null` unlinks. */
-  readonly setManualParent: (child: ScopedThreadRef, parent: ScopedThreadRef | null) => Promise<void>;
+  readonly setManualParent: (
+    child: ScopedThreadRef,
+    parent: ScopedThreadRef | null,
+  ) => Promise<void>;
 }

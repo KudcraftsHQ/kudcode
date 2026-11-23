@@ -41,6 +41,7 @@ import { MESSAGE_HEADING_LEVEL, MessageAuthorHeading } from "./TimelineRowParts"
 import { useAtomValue } from "@effect/atom-react";
 import { AsyncResult, Atom } from "effect/reactivity";
 import { vcsEnvironment } from "../../state/vcs";
+import { KudTimelineForkActions } from "~/kud/fork/KudTimelineForkActions";
 
 const NO_VCS_STATUS = Atom.make(AsyncResult.initial());
 
@@ -256,7 +257,10 @@ function AssistantMessageMeta({
         streaming={copyStreaming}
       />
       {projectedItem?.item.type === "assistant_message" ? (
-        <AssistantForkButton projectedItem={projectedItem} />
+        <>
+          <AssistantForkButton projectedItem={projectedItem} />
+          <KudTimelineForkActions projectedItem={projectedItem} />
+        </>
       ) : null}
       {!message.streaming && projectedItem ? (
         <AssistantReplyButton message={message} itemId={projectedItem.sourceItemId} />

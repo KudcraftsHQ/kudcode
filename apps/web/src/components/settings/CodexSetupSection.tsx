@@ -16,6 +16,7 @@ import type {
   ServerProvider,
 } from "@t3tools/contracts";
 import { codexAuthHandoffUrl } from "@t3tools/shared/codexAuthHandoff";
+import { kudOsReturnUrl } from "@t3tools/shared/kudIdentity";
 import { providerAuthReturnUrl } from "@t3tools/shared/providerAuthReturnUrl";
 import { isLoopbackHost } from "@t3tools/shared/preview";
 import { CheckIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-react";
@@ -510,7 +511,7 @@ function ManagedCodexSetup({
     if (pendingRef.current) return;
     setTransferFailed(false);
     setRequestedMethodId(methodId);
-    const returnUrl = new URL(window.location.href);
+    const returnUrl = new URL(kudOsReturnUrl(window.location.href));
     if (returnUrl.pathname === "/welcome") returnUrl.hash = `agents:${environmentId}`;
     if (returnUrl.pathname === "/settings/providers")
       returnUrl.searchParams.set("instanceId", instanceId);
