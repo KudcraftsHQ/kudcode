@@ -858,6 +858,36 @@ const STEPS: ReadonlyArray<Step> = [
   "done",
 ];
 
+/**
+ * `vp install` runs whichever `pnpm` comes first on PATH. An older global pnpm (seen: 9.9 on Node 22)
+ * reads the pnpm 12 lockfile as broken and re-resolves until it hangs, so put Vite+'s own tools
+ * first and refuse to go on with the wrong pnpm.
+ */
+function preflightToolchain(): void {
+  const vitePlusBin = NodePath.join(NodeOS.homedir(), ".local", "share", "vite-plus", "bin");
+  if (NodeFS.existsSync(vitePlusBin)) {
+    process.env.PATH = [vitePlusBin, process.env.PATH ?? ""].join(NodePath.delimiter);
+  }
+  const manifest = JSON.parse(
+    NodeFS.readFileSync(NodePath.join(REPO_ROOT, "package.json"), "utf8"),
+  );
+  const wanted = /^pnpm@(\S+)$/u.exec(String(manifest.packageManager ?? ""))?.[1];
+  if (wanted === undefined) return;
+  let version = "";
+  try {
+    const found = run("pnpm", ["--version"], { cwd: REPO_ROOT });
+    if (found.status === 0) version = found.stdout.trim();
+  } catch {
+    // No pnpm on PATH at all: reported below.
+  }
+  if (version !== wanted) {
+    throw new Stop(
+      `pnpm on PATH is ${version || "missing"}, this repo needs ${wanted}. Put ${vitePlusBin} first on PATH (or remove the older global pnpm), then run again.`,
+      1,
+    );
+  }
+}
+
 async function main(): Promise<void> {
   const { values, positionals } = NodeUtil.parseArgs({
     allowPositionals: true,
@@ -900,6 +930,7 @@ async function main(): Promise<void> {
     return;
   }
   if (values.abort) return abort();
+  preflightToolchain();
   if (values.build !== undefined && values.build !== "mac")
     throw new Stop("--build only knows mac.", 1);
   if (!["acceptEdits", "bypassPermissions"].includes(values["agent-mode"])) {

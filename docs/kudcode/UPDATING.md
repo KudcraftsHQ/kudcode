@@ -81,3 +81,9 @@ unattended, chain them: `node scripts/kud/check-nightly.ts && node scripts/kud/u
   line counts. Edit its Why column by hand; the rest is regenerated.
 - `--main <branch> --no-push --no-fetch` runs the whole update against a local branch without pushing,
   which is how to rehearse it.
+
+## Toolchain
+
+`update.ts` puts `~/.local/share/vite-plus/bin` first on PATH and stops if `pnpm --version` is not the
+`packageManager` version. An older global pnpm (for example 9.9 in `~/.local/bin`) reads the pnpm 12
+lockfile as broken and `vp i` hangs re-resolving it.
