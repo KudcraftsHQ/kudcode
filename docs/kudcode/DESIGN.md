@@ -46,7 +46,13 @@ same threads, because it talks to the same T3 server.
 - **Edges:** parent from `forkedFrom.threadId` (fork from a run) else `lineage.parentThreadId`, the same rule
   as `client-runtime/state/threadRelationships.ts` `deriveThreadRelationshipGraph`. Fork edges are labelled
   with the fork point. Subagents are collapsed under their parent by default (count badge, expand on click).
-  Manual links (below) are drawn like forks with a "linked" marker.
+  Manual links (below) are drawn like forks with a "linked" marker. A thread the engine left as a root
+  goes under the thread whose agent launched it (`senderThreadId` of its first user message, read once
+  from the bounded thread snapshot and cached per viewer forever), labelled "Started by agent".
+  Precedence: engine lineage, then a manual link (link store, then `kud:parent:` tag), then started-by.
+- **Same work:** threads on one pull request, or one non-default worktree branch of a project, get a soft
+  outline behind them where they sit together; where they cannot, each card carries a "Same PR as …" tab
+  that selects the others. Never an edge.
 - **Data:** `useQuietThreadShells()` / `useProjects()` from `apps/web/src/state/entities.ts`. The shell
   stream drops settled threads past the newest 25 and idle subagents; for complete trees mount families
   with `threadFamilies.mount(...)` (`client-runtime/state/threadFamilies.ts`) for visible roots, and page

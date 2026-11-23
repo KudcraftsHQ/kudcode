@@ -13,6 +13,8 @@ export interface CanvasInteractions {
   readonly openDialog: (kind: CanvasDialogKind, key: string) => void;
   readonly reportBack: (key: string) => void;
   readonly unlink: (key: string) => void;
+  /** Selects these cards and brings them into view. */
+  readonly highlight: (keys: ReadonlyArray<string>) => void;
   readonly providerFor: (thread: EnvironmentThreadShell) => ProviderInstanceEntry | null;
   /** Touch screens pan with one finger, so nodes there are not dragged. */
   readonly coarsePointer: boolean;
@@ -27,6 +29,7 @@ export const CanvasInteractionsContext = createContext<CanvasInteractions>({
   openDialog: noop,
   reportBack: noop,
   unlink: noop,
+  highlight: noop,
   providerFor: () => null,
   coarsePointer: false,
 });

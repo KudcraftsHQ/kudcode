@@ -2,13 +2,20 @@ import dagre from "@dagrejs/dagre";
 import { scopedThreadKey, scopeThreadRef } from "@t3tools/client-runtime/environment";
 import type { EnvironmentThreadShell } from "@t3tools/client-runtime/state/models";
 import { deriveThreadRelationshipGraph } from "@t3tools/client-runtime/state/thread-relationships";
-import type { EnvironmentId, ProjectId } from "@t3tools/contracts";
+import { resolveThreadCurrentPullRequestLink } from "@t3tools/client-runtime/thread-pull-requests";
+import type { EnvironmentId, ProjectId, ThreadId } from "@t3tools/contracts";
 import { Position, type Edge, type Node, type NodeHandle, type XYPosition } from "@xyflow/react";
 
-import { readKudParentTag } from "../shared/contract";
+import { readKudParentTag, type KudManualLink } from "../shared/contract";
 
 export type CanvasMode = "tree" | "projects";
-export type CanvasRelation = "fork" | "side-chat" | "subagent" | "workflow-step" | "linked";
+export type CanvasRelation =
+  | "fork"
+  | "side-chat"
+  | "subagent"
+  | "workflow-step"
+  | "linked"
+  | "started-by";
 
 export interface CanvasThread {
   readonly key: string;
@@ -65,12 +72,17 @@ const isCollapsibleRelation = (relation: CanvasRelation | null) =>
 
 /**
  * Every live thread placed in a tree. The engine's lineage decides parents, the same rule as
- * `deriveThreadRelationshipGraph`; a `kud:parent:` tag only places threads the engine left as
- * roots, and never one that would close a cycle.
+ * `deriveThreadRelationshipGraph`. Threads the engine left as roots are then placed by a manual
+ * link (the link store, else the `kud:parent:` tag), else by the thread whose agent sent their
+ * first message. None of these ever closes a cycle, and each moves the child's whole subtree.
  */
 export function buildCanvasForest(input: {
   readonly threads: ReadonlyArray<EnvironmentThreadShell>;
   readonly hiddenKeys: ReadonlySet<string>;
+  /** Keyed by `scopedThreadKey` of the child. */
+  readonly manualLinks?: ReadonlyMap<string, KudManualLink>;
+  /** Keyed by `scopedThreadKey` of the child: the thread whose agent sent its first message. */
+  readonly startedBy?: ReadonlyMap<string, ThreadId | null>;
 }): CanvasForest {
   const live = input.threads.filter(
     (thread) =>
@@ -118,13 +130,31 @@ export function buildCanvasForest(input: {
     }
     return false;
   };
+  const attach = (
+    key: string,
+    thread: EnvironmentThreadShell,
+    parentId: ThreadId | null | undefined,
+    relation: CanvasRelation,
+  ) => {
+    if (parentId == null || parentId === thread.id) return false;
+    const parentKey = scopedThreadKey(scopeThreadRef(thread.environmentId, parentId));
+    if (!byKey.has(parentKey) || reaches(parentKey, key)) return false;
+    parentOf.set(key, { key: parentKey, relation });
+    return true;
+  };
+  const unplaced: Array<readonly [string, EnvironmentThreadShell]> = [];
   for (const [key, thread] of byKey) {
     if (engineParentId(thread) !== null) continue;
-    const tagged = readKudParentTag(thread.source.tags);
-    if (tagged === null) continue;
-    const parentKey = scopedThreadKey(scopeThreadRef(thread.environmentId, tagged));
-    if (!byKey.has(parentKey) || reaches(parentKey, key)) continue;
-    parentOf.set(key, { key: parentKey, relation: "linked" });
+    const link = input.manualLinks?.get(key);
+    const manual =
+      link !== undefined && link.environmentId === thread.environmentId
+        ? link.parentThreadId
+        : readKudParentTag(thread.source.tags);
+    if (!attach(key, thread, manual, "linked")) unplaced.push([key, thread]);
+  }
+  // After every manual link, so a hand-made link is never refused for a cycle a guess made.
+  for (const [key, thread] of unplaced) {
+    attach(key, thread, input.startedBy?.get(key), "started-by");
   }
 
   const threads = new Map<string, CanvasThread>();
@@ -196,6 +226,77 @@ export function filterCanvasFamilies(
   );
 }
 
+/** Threads doing the same work: one pull request, or one worktree branch of a project. */
+export interface SameWork {
+  readonly key: string;
+  readonly kind: "pr" | "branch";
+  readonly number: number | null;
+  readonly title: string | null;
+  readonly branch: string | null;
+}
+
+const DEFAULT_BRANCHES = new Set(["main", "master", "trunk", "develop"]);
+
+function sameWorkOf(thread: EnvironmentThreadShell): SameWork | null {
+  const link = resolveThreadCurrentPullRequestLink(thread.pullRequests);
+  const url = link?.url ?? thread.linkedPullRequest?.url ?? null;
+  if (url !== null) {
+    return {
+      key: `pr|${url.toLowerCase()}`,
+      kind: "pr",
+      number: link?.number ?? thread.linkedPullRequest?.number ?? null,
+      title: link?.snapshot?.title ?? null,
+      branch: link?.snapshot?.headBranch ?? null,
+    };
+  }
+  if (thread.branch === null || thread.worktreePath === null) return null;
+  if (DEFAULT_BRANCHES.has(thread.branch)) return null;
+  return {
+    key: `branch|${thread.environmentId}|${thread.projectId}|${thread.branch}|${thread.worktreePath}`,
+    kind: "branch",
+    number: null,
+    title: null,
+    branch: thread.branch,
+  };
+}
+
+/** Families that share work move next to the first of them, so the layout can outline them. */
+function clusterSameWork(families: ReadonlyArray<CanvasFamily>): ReadonlyArray<CanvasFamily> {
+  const workOf = new Map<string, ReadonlySet<string>>();
+  const familiesOf = new Map<string, CanvasFamily[]>();
+  for (const family of families) {
+    const keys = new Set<string>();
+    for (const member of family.members) {
+      const work = sameWorkOf(member.thread);
+      if (work !== null) keys.add(work.key);
+    }
+    workOf.set(family.key, keys);
+    for (const key of keys) {
+      const list = familiesOf.get(key);
+      if (list === undefined) familiesOf.set(key, [family]);
+      else list.push(family);
+    }
+  }
+  const placed = new Set<string>();
+  const ordered: CanvasFamily[] = [];
+  for (const family of families) {
+    if (placed.has(family.key)) continue;
+    const queue = [family];
+    while (queue.length > 0) {
+      const next = queue.shift()!;
+      if (placed.has(next.key)) continue;
+      placed.add(next.key);
+      ordered.push(next);
+      for (const key of workOf.get(next.key) ?? []) {
+        for (const other of familiesOf.get(key) ?? []) {
+          if (!placed.has(other.key)) queue.push(other);
+        }
+      }
+    }
+  }
+  return ordered;
+}
+
 // Node size matches the card's `w-72 h-28`.
 const THREAD_NODE_WIDTH = 288;
 const THREAD_NODE_HEIGHT = 112;
@@ -235,8 +336,16 @@ const OUTLINE_NODE_HANDLES: NodeHandle[] = [
   },
 ];
 
+/** Same-work threads the layout could not outline together: the card names them instead. */
+export type SameWorkChip = {
+  readonly kind: SameWork["kind"];
+  readonly others: ReadonlyArray<{ readonly key: string; readonly title: string }>;
+};
+
 export type ThreadNodeData = {
   readonly item: CanvasThread;
+  readonly familyKey: string;
+  readonly sameWork?: SameWorkChip;
   readonly subagentCount: number;
   readonly subagentsExpanded: boolean;
   /** Indented outline (narrow screens): the source handle sits at the card's bottom left. */
@@ -255,9 +364,16 @@ export type LineageEdgeData = {
   readonly relation: CanvasRelation;
   readonly childCreatedAt: string;
 };
+export type SameWorkNodeData = {
+  readonly kind: SameWork["kind"];
+  readonly number: number | null;
+  readonly title: string | null;
+  readonly branch: string | null;
+};
 export type ThreadFlowNode = Node<ThreadNodeData, "thread">;
 export type ProjectFlowNode = Node<ProjectNodeData, "project">;
-export type CanvasFlowNode = ThreadFlowNode | ProjectFlowNode;
+export type SameWorkFlowNode = Node<SameWorkNodeData, "sameWork">;
+export type CanvasFlowNode = ThreadFlowNode | ProjectFlowNode | SameWorkFlowNode;
 export type LineageFlowEdge = Edge<LineageEdgeData, "lineage">;
 
 export interface CanvasLayout {
@@ -340,7 +456,10 @@ function placeFamily(
 }
 
 /** Depth-first, each child one indent right of its parent and below it. */
-function placeFamilyOutline(family: CanvasFamily, visible: ReadonlyArray<CanvasThread>): PlacedFamily {
+function placeFamilyOutline(
+  family: CanvasFamily,
+  visible: ReadonlyArray<CanvasThread>,
+): PlacedFamily {
   const childrenOf = new Map<string, CanvasThread[]>();
   for (const member of visible) {
     if (member.parentKey === null) continue;
@@ -389,6 +508,115 @@ function packFamilies(placed: ReadonlyArray<PlacedFamily>, maxWidth: number) {
   return { offsets, width, height: placed.length === 0 ? 0 : y + rowHeight };
 }
 
+const SAME_WORK_PAD = 10;
+
+interface Rect {
+  readonly x: number;
+  readonly y: number;
+  readonly width: number;
+  readonly height: number;
+}
+
+const rectOf = (node: CanvasFlowNode): Rect => ({
+  x: node.position.x,
+  y: node.position.y,
+  width: node.width ?? THREAD_NODE_WIDTH,
+  height: node.height ?? THREAD_NODE_HEIGHT,
+});
+
+const overlaps = (left: Rect, right: Rect) =>
+  left.x < right.x + right.width &&
+  right.x < left.x + left.width &&
+  left.y < right.y + right.height &&
+  right.y < left.y + left.height;
+
+/**
+ * Same-work threads that sit together get one soft outline behind them. Where another card sits in
+ * between, or they live in different project regions, each card names the others instead.
+ */
+function withSameWork(nodes: ReadonlyArray<CanvasFlowNode>): CanvasFlowNode[] {
+  const threadNodes = nodes.filter((node): node is ThreadFlowNode => node.type === "thread");
+  const groups = new Map<string, { work: SameWork; members: ThreadFlowNode[] }>();
+  for (const node of threadNodes) {
+    const work = sameWorkOf(node.data.item.thread);
+    if (work === null) continue;
+    const group = groups.get(work.key);
+    if (group === undefined) groups.set(work.key, { work, members: [node] });
+    else group.members.push(node);
+  }
+  const outlines: SameWorkFlowNode[] = [];
+  const chips = new Map<string, SameWorkChip>();
+  const outlineOf = (work: SameWork, members: ReadonlyArray<ThreadFlowNode>, id: string) => {
+    const parentId = members[0]!.parentId;
+    if (members.some((member) => member.parentId !== parentId)) return null;
+    const rects = members.map(rectOf);
+    const minX = Math.min(...rects.map((rect) => rect.x)) - SAME_WORK_PAD;
+    const minY = Math.min(...rects.map((rect) => rect.y)) - SAME_WORK_PAD;
+    const maxX = Math.max(...rects.map((rect) => rect.x + rect.width)) + SAME_WORK_PAD;
+    const maxY = Math.max(...rects.map((rect) => rect.y + rect.height)) + SAME_WORK_PAD;
+    const box = { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+    const memberIds = new Set(members.map((member) => member.id));
+    const blocked = threadNodes.some(
+      (other) =>
+        !memberIds.has(other.id) && other.parentId === parentId && overlaps(rectOf(other), box),
+    );
+    if (blocked) return null;
+    const outlineNode: SameWorkFlowNode = {
+      id,
+      type: "sameWork",
+      position: { x: box.x, y: box.y },
+      width: box.width,
+      height: box.height,
+      measured: { width: box.width, height: box.height },
+      ...(parentId === undefined ? {} : { parentId }),
+      draggable: false,
+      selectable: false,
+      focusable: false,
+      style: { pointerEvents: "none" },
+      data: { kind: work.kind, number: work.number, title: work.title, branch: work.branch },
+    };
+    return outlineNode;
+  };
+  for (const { work, members } of groups.values()) {
+    if (members.length < 2) continue;
+    const whole = outlineOf(work, members, `same-work|${work.key}`);
+    if (whole !== null) {
+      outlines.push(whole);
+      continue;
+    }
+    // Apart as a whole: outline each tree's share that sits together, name the rest on the card.
+    const outlined = new Set<string>();
+    for (const [familyKey, share] of groupBy(members, (member) => member.data.familyKey)) {
+      if (share.length < 2) continue;
+      const outlineNode = outlineOf(work, share, `same-work|${work.key}|${familyKey}`);
+      if (outlineNode === null) continue;
+      outlines.push(outlineNode);
+      for (const member of share) outlined.add(member.id);
+    }
+    for (const member of members) {
+      if (outlined.has(member.id)) continue;
+      chips.set(member.id, {
+        kind: work.kind,
+        others: members
+          .filter((other) => other !== member)
+          .map((other) => ({ key: other.id, title: other.data.item.thread.title })),
+      });
+    }
+  }
+  const withChips = nodes.map((node): CanvasFlowNode => {
+    const chip = node.type === "thread" ? chips.get(node.id) : undefined;
+    return chip === undefined || node.type !== "thread"
+      ? node
+      : { ...node, data: { ...node.data, sameWork: chip } };
+  });
+  // Parents first, then the outlines, then the cards, so every outline sits behind its cards.
+  return [
+    ...withChips.filter((node) => node.type === "project"),
+    ...outlines,
+    ...withChips.filter((node) => node.type !== "project"),
+  ];
+}
+
 export function layoutCanvas(input: {
   readonly forest: CanvasForest;
   readonly families: ReadonlyArray<CanvasFamily>;
@@ -432,10 +660,13 @@ export function layoutCanvas(input: {
         ...(parentId === undefined ? {} : { parentId, extent: "parent" as const }),
         data: {
           item: member,
+          familyKey: item.family.key,
           subagentCount,
           subagentsExpanded: input.expandedSubagents.has(member.key),
           outline,
-          ...(mode === "tree" && member.parentKey === null
+          // Roots where projects mix, and children a link brought in from another project.
+          ...((mode === "tree" && member.parentKey === null) ||
+          member.thread.projectId !== item.family.root.thread.projectId
             ? {
                 projectTitle:
                   input.projectTitles.get(
@@ -461,16 +692,17 @@ export function layoutCanvas(input: {
     return ids;
   };
 
+  const families = clusterSameWork(input.families);
   if (mode === "tree") {
-    const placed = input.families.map((family) => placeFamily(family, input.expandedSubagents, outline));
+    const placed = families.map((family) => placeFamily(family, input.expandedSubagents, outline));
     const packed = packFamilies(placed, maxWidth);
     for (const item of placed) {
       emitFamily(item, packed.offsets.get(item.family.key) ?? { x: 0, y: 0 }, undefined);
     }
-    return { nodes, edges };
+    return { nodes: withSameWork(nodes), edges };
   }
 
-  const byProject = groupBy(input.families, (family) =>
+  const byProject = groupBy(families, (family) =>
     projectKeyOf(family.root.thread.environmentId, family.root.thread.projectId),
   );
   const innerWidth = Math.max(THREAD_NODE_WIDTH, maxWidth - PROJECT_PADDING * 2);
@@ -507,7 +739,7 @@ export function layoutCanvas(input: {
     }
     y += height + PROJECT_GAP;
   }
-  return { nodes, edges };
+  return { nodes: withSameWork(nodes), edges };
 }
 
 /** Threads `childKey` may be linked under: same environment, not itself or its descendants. */

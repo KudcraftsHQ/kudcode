@@ -22,7 +22,7 @@ import {
 } from "@xyflow/react";
 import { T, useGT, useMessages } from "gt-react";
 import { FolderTreeIcon, ListFilterIcon, NetworkIcon, ScanIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 import { NoProjectsHero } from "../../components/NoProjectsHero";
 import { Button } from "../../components/ui/button";
@@ -70,6 +70,7 @@ import { useOlderSettledShelf, useOlderSettledShelfGrowth } from "../../state/ol
 import { primaryServerProvidersAtom } from "../../state/server";
 import { threadFamilies } from "../../state/threads";
 import { buildThreadRouteParams } from "../../threadRoutes";
+import { KudManualLinksContext } from "../shared/contract";
 import { DirectionDialog, LinkUnderDialog } from "./CanvasDialogs";
 import {
   CanvasInteractionsContext,
@@ -101,6 +102,8 @@ import {
 import { isKudForkActionsUnavailable, useKudForkActions } from "./forkActionsContext";
 import { LineageEdge } from "./LineageEdge";
 import { ProjectNode } from "./ProjectNode";
+import { SameWorkNode } from "./SameWorkNode";
+import { isStartedByCandidate, useRequestStartedBy, useStartedByAnswers } from "./startedBy";
 import { ThreadNode } from "./ThreadNode";
 
 export interface CanvasSearch {
@@ -140,7 +143,11 @@ function patchSearch(
   };
 }
 
-const nodeTypes = { thread: ThreadNode, project: ProjectNode } satisfies NodeTypes;
+const nodeTypes = {
+  thread: ThreadNode,
+  project: ProjectNode,
+  sameWork: SameWorkNode,
+} satisfies NodeTypes;
 const edgeTypes = { lineage: LineageEdge } satisfies EdgeTypes;
 
 // Family reads are one request each; the most recent trees are the ones worth completing.
@@ -291,9 +298,25 @@ function CanvasView({
   const projectKey =
     search.project !== undefined && projectTitles.has(search.project) ? search.project : null;
 
-  const forest = buildCanvasForest({ threads, hiddenKeys });
+  const manualLinks = use(KudManualLinksContext);
+  const startedBy = useStartedByAnswers();
+  const forest = buildCanvasForest({
+    threads,
+    hiddenKeys,
+    manualLinks: manualLinks.byChild,
+    startedBy,
+  });
   const families = filterCanvasFamilies(forest.families, { includeSettled, projectKey });
   useCanvasFamilyMounts(families);
+  // Agent-launched roots of the trees on screen; children placed by hand are already settled.
+  useRequestStartedBy(
+    startedBy,
+    families.flatMap((family) =>
+      family.members
+        .filter((member) => member.relation !== "linked" && isStartedByCandidate(member.thread))
+        .map((member) => member.thread),
+    ),
+  );
 
   const scopeProject =
     projectKey === null
@@ -419,6 +442,15 @@ function CanvasView({
     unlink: (key) => {
       const item = forest.threads.get(key);
       if (item !== undefined) void setParent(item, null);
+    },
+    highlight: (keys) => {
+      setOverrides((current) => ({ ...current, selected: new Set(keys) }));
+      void reactFlow.fitView({
+        nodes: keys.map((id) => ({ id })),
+        padding: 0.2,
+        maxZoom: 1,
+        duration: 250,
+      });
     },
     providerFor: (thread: EnvironmentThreadShell) =>
       providerEntries.get(

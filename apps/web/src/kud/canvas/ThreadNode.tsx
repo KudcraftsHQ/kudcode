@@ -11,12 +11,14 @@ import {
   GitBranchIcon,
   LinkIcon,
   MessagesSquareIcon,
+  RocketIcon,
   WorkflowIcon,
   type LucideIcon,
 } from "lucide-react";
 import { useRef, useState, type PointerEvent } from "react";
 
 import { ProviderInstanceIcon } from "../../components/chat/ProviderInstanceIcon";
+import { PullRequestGlyph } from "../../components/pullRequest/pullRequestIcons";
 import {
   resolveThreadLastVisitedAt,
   resolveThreadStatusPill,
@@ -35,7 +37,7 @@ import { cn } from "../../lib/utils";
 import { formatRelativeTimeLabel } from "../../timestampFormat";
 import { useUiStateStore } from "../../uiStateStore";
 import { useCanvasInteractions } from "./canvasContext";
-import type { CanvasRelation, ThreadFlowNode } from "./canvasGraph.logic";
+import type { CanvasRelation, SameWorkChip, ThreadFlowNode } from "./canvasGraph.logic";
 
 const LONG_PRESS_MS = 500;
 const LONG_PRESS_SLOP_PX = 8;
@@ -46,6 +48,7 @@ const RELATION_ICON: Record<CanvasRelation, LucideIcon> = {
   subagent: BotIcon,
   "workflow-step": WorkflowIcon,
   linked: LinkIcon,
+  "started-by": RocketIcon,
 };
 
 function previewLine(text: string | undefined): string | null {
@@ -69,7 +72,9 @@ function RelationMarker({ relation }: { readonly relation: CanvasRelation }) {
           ? gt("Subagent")
           : relation === "workflow-step"
             ? gt("Workflow step")
-            : gt("Linked by hand");
+            : relation === "started-by"
+              ? gt("Started by an agent in the parent thread")
+              : gt("Linked by hand");
   return (
     <Tooltip>
       <TooltipTrigger
@@ -82,6 +87,48 @@ function RelationMarker({ relation }: { readonly relation: CanvasRelation }) {
         }
       >
         <Icon className="size-3.5" />
+      </TooltipTrigger>
+      <TooltipPopup side="top">{label}</TooltipPopup>
+    </Tooltip>
+  );
+}
+
+/** Sits on the card's top edge, outside its fixed height, so the tree keeps its spacing. */
+function SameWorkTab({
+  chip,
+  threadKey,
+}: {
+  readonly chip: SameWorkChip;
+  readonly threadKey: string;
+}) {
+  const gt = useGT();
+  const interactions = useCanvasInteractions();
+  const first = chip.others[0]?.title ?? "";
+  const more = chip.others.length - 1;
+  const label =
+    chip.kind === "pr"
+      ? more > 0
+        ? gt("Same PR as “{title}” and {count} more", { title: first, count: more })
+        : gt("Same PR as “{title}”", { title: first })
+      : more > 0
+        ? gt("Same branch as “{title}” and {count} more", { title: first, count: more })
+        : gt("Same branch as “{title}”", { title: first });
+  const Icon = chip.kind === "pr" ? PullRequestGlyph.pullRequest : GitBranchIcon;
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            className="absolute -top-2.5 left-3 z-10 inline-flex h-5 max-w-[calc(100%-1.5rem)] items-center gap-1 rounded-full border bg-background px-1.5 text-3xs text-muted-foreground leading-4 outline-hidden hover:border-ring/50 hover:text-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/40"
+            onClick={() =>
+              interactions.highlight([threadKey, ...chip.others.map((other) => other.key)])
+            }
+          />
+        }
+      >
+        <Icon className="size-3 shrink-0" />
+        <span className="truncate">{label}</span>
       </TooltipTrigger>
       <TooltipPopup side="top">{label}</TooltipPopup>
     </Tooltip>
@@ -207,6 +254,9 @@ export function ThreadNode(node: NodeProps<ThreadFlowNode>) {
         isConnectable={false}
         data-kud-canvas-handle=""
       />
+      {node.data.sameWork === undefined ? null : (
+        <SameWorkTab chip={node.data.sameWork} threadKey={threadKey} />
+      )}
       <div className="flex min-w-0 items-start gap-1.5">
         {item.relation === null ? null : <RelationMarker relation={item.relation} />}
         <button

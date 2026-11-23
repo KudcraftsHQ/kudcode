@@ -14,9 +14,10 @@ import type { CanvasRelation, LineageFlowEdge } from "./canvasGraph.logic";
 
 const BEND_OFFSET = 20;
 
-// Solid for forks; the rest are told apart by their dash.
+// Solid for forks and agent-started threads; the rest are told apart by their dash.
 const EDGE_STYLE: Record<CanvasRelation, CSSProperties> = {
   fork: {},
+  "started-by": {},
   "side-chat": { strokeDasharray: "8 4" },
   subagent: { strokeDasharray: "3 4" },
   "workflow-step": { strokeDasharray: "3 4" },
@@ -57,7 +58,9 @@ export function LineageEdge(edge: EdgeProps<LineageFlowEdge>) {
         ? gt("Side chat")
         : relation === "linked"
           ? gt("Linked")
-          : null;
+          : relation === "started-by"
+            ? gt("Started by agent")
+            : null;
   return (
     <>
       <BaseEdge id={edge.id} path={path} style={EDGE_STYLE[relation]} />
