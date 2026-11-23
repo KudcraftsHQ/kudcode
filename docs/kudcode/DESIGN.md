@@ -2,7 +2,7 @@
 
 Kud Code is a fork of [T3 Code](https://github.com/pingdotgg/t3code) that adds a **node canvas of threads**
 as the home screen, with **forking from an automatic short brief** instead of the parent's whole history.
-It is a different *client*, not a different server: it runs next to the official T3 Code app and shows the
+It is a different _client_, not a different server: it runs next to the official T3 Code app and shows the
 same threads, because it talks to the same T3 server.
 
 ## Principles
@@ -84,26 +84,32 @@ Briefs are automatic: no review step.
 
 ## 3. Desktop app that coexists with T3 Code (`apps/desktop`, `scripts/build-desktop-artifact.ts`)
 
-| Item | T3 Code | Kud Code |
-|---|---|---|
-| Bundle id | `com.t3tools.t3code` | `com.kudcrafts.kudcode` |
-| Product name / .app | `T3 Code (Beta)` / `(Nightly)` | `Kud Code` |
-| Electron userData (holds the single-instance lock) | `t3code-v2` | `kudcode-v2` |
-| Desktop state dir | `~/.t3/userdata` | `~/.t3/kudcode` (base dir stays `~/.t3`) |
-| OS URL scheme | `t3code://` (+ http/https viewer) | `kudcode://`, no http/https/html claims |
-| Local backend | spawns its own server | **off by default** (`localEnvironmentEnabled=false`), pairs with the running server; host environment id read from `~/.t3/userdata/environment-id` |
-| `t3` CLI shim | writes `~/.t3/bin/t3` | disabled |
-| Managed policy file | `/Library/.../T3Code/policy.json` | `/Library/.../KudCode/policy.json` |
-| Auto-update | GitHub feed | no feed (local builds), and hard-disabled |
-| In-renderer scheme | `t3code://app` | unchanged (the server trusts this origin) |
+| Item                                               | T3 Code                           | Kud Code                                                                                                                                           |
+| -------------------------------------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bundle id                                          | `com.t3tools.t3code`              | `com.kudcrafts.kudcode`                                                                                                                            |
+| Product name / .app                                | `T3 Code (Beta)` / `(Nightly)`    | `Kud Code`                                                                                                                                         |
+| Electron userData (holds the single-instance lock) | `t3code-v2`                       | `kudcode-v2`                                                                                                                                       |
+| Desktop state dir                                  | `~/.t3/userdata`                  | `~/.t3/kudcode` (base dir stays `~/.t3`)                                                                                                           |
+| OS URL scheme                                      | `t3code://` (+ http/https viewer) | `kudcode://`, no http/https/html claims                                                                                                            |
+| Local backend                                      | spawns its own server             | **off by default** (`localEnvironmentEnabled=false`), pairs with the running server; host environment id read from `~/.t3/userdata/environment-id` |
+| `t3` CLI shim                                      | writes `~/.t3/bin/t3`             | disabled                                                                                                                                           |
+| Managed policy file                                | `/Library/.../T3Code/policy.json` | `/Library/.../KudCode/policy.json`                                                                                                                 |
+| Auto-update                                        | GitHub feed                       | no feed (local builds), and hard-disabled                                                                                                          |
+| In-renderer scheme                                 | `t3code://app`                    | unchanged (the server trusts this origin)                                                                                                          |
 
 Why: two desktop apps cannot both run a server on `~/.t3` (`server-owner.sqlite` lock: the second quits), and
 a shared desktop state dir breaks the `safeStorage`-encrypted `connection-catalog.json` (each app's Keychain
 key differs, each overwrites the other's). A paired client avoids both and shows the same data.
 
-Theme: Kud Code starts on the same theme as T3 Code. If T3 Code keeps the selected theme in a file under
-`~/.t3/userdata` (e.g. `client-settings.json`), Kud Code reads it read-only on start; installed custom
-themes live in the renderer's localStorage and are imported once by the setup script.
+Theme: Kud Code starts on the same theme as T3 Code. The selection, light/dark halves and installed custom
+themes live only in T3 Code's renderer localStorage (`t3code:theme*`, not in any `~/.t3` file). On its first
+launch Kud Code reads those keys from `~/Library/Application Support/t3code-v2/Local Storage/leveldb`, read-only
+and without taking LevelDB's lock (the same reader T3 Code uses for its V1 import), and seeds its own profile.
+Delete `t3-theme-imported` in Kud Code's profile to import again. Themes set with `t3 theme set` live on the
+server and reach both apps on their own.
+
+One switch: `packages/shared/src/kudIdentity.ts`. Builds define `__KUD_CODE__` (on unless `KUD_CODE=0`), and
+the build script, dev launcher and Vite configs read the same module. Upstream files touched: `PATCHES.md`.
 
 ## 4. Updating to a new nightly (`scripts/kud/`)
 
