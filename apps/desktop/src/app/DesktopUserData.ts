@@ -1,3 +1,4 @@
+import { KUD_CODE, KUD_IDENTITY } from "@t3tools/shared/kudIdentity";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Path from "effect/Path";
@@ -39,9 +40,19 @@ export const resolveUserDataPath = Effect.fn("desktop.userData.resolveUserDataPa
   }) {
     const fs = yield* FileSystem.FileSystem;
     const path = yield* Path.Path;
-    const names = input.isDevelopment
-      ? { current: "t3code-dev", legacy: "T3 Code (Dev)" }
-      : { current: "t3code-v2", legacy: "T3 Code (Alpha)" };
+    const names = KUD_CODE
+      ? {
+          current: input.isDevelopment
+            ? KUD_IDENTITY.devUserDataDirName
+            : KUD_IDENTITY.userDataDirName,
+          // Never fall back to or copy from an official T3 Code profile.
+          legacy: input.isDevelopment
+            ? KUD_IDENTITY.devUserDataDirName
+            : KUD_IDENTITY.userDataDirName,
+        }
+      : input.isDevelopment
+        ? { current: "t3code-dev", legacy: "T3 Code (Dev)" }
+        : { current: "t3code-v2", legacy: "T3 Code (Alpha)" };
     const destinationPath = path.join(input.appDataDirectory, names.current);
     const legacyPath = path.join(input.appDataDirectory, names.legacy);
     const inspect = (resourcePath: string) =>
@@ -56,7 +67,7 @@ export const resolveUserDataPath = Effect.fn("desktop.userData.resolveUserDataPa
       return (yield* inspect(legacyPath)) ? legacyPath : destinationPath;
     }
     // Chromium databases require their own profile for each running version.
-    if (input.platform !== "win32") return destinationPath;
+    if (input.platform !== "win32" || KUD_CODE) return destinationPath;
     const destinationState = path.join(destinationPath, "Local State");
     if (yield* inspect(destinationState)) return destinationPath;
     const legacyState = path.join(legacyPath, "Local State");

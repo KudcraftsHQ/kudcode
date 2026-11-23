@@ -1,3 +1,4 @@
+import { KUD_CODE } from "@t3tools/shared/kudIdentity";
 import {
   DESKTOP_UPDATE_RESTART_MARKER_FILE,
   DESKTOP_UPDATE_IN_PROGRESS_MARKER_FILE,
@@ -350,6 +351,8 @@ function getAutoUpdateDisabledReason(args: {
   disabledByEnv: boolean;
   hasUpdateFeedConfig: boolean;
 }): string | null {
+  // An update feed would replace Kud Code with official T3 Code.
+  if (KUD_CODE) return "Kud Code updates by rebuilding from source.";
   if (args.policy.mode === "off") {
     return args.policy.message ?? "Updates are turned off on this machine.";
   }

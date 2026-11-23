@@ -40,7 +40,7 @@ export const getHostEnvironmentId = makeIpcMethod({
     const environment = yield* DesktopEnvironment.DesktopEnvironment;
     const fileSystem = yield* FileSystem.FileSystem;
     const contents = yield* fileSystem
-      .readFileString(environment.path.join(environment.stateDir, "environment-id"))
+      .readFileString(environment.path.join(environment.serverStateDir, "environment-id"))
       .pipe(Effect.orElseSucceed(() => ""));
     return contents.trim() || null;
   }),

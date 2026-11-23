@@ -1,3 +1,4 @@
+import { KUD_CODE, KUD_IDENTITY } from "@t3tools/shared/kudIdentity";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -20,8 +21,19 @@ export class DesktopLegacyLocalStorage extends Context.Service<
   }
 >()("@t3tools/desktop/app/DesktopLegacyLocalStorage") {}
 
-const MARKER_FILE_NAME = "v1-local-storage-imported";
-const V1_PROFILE_NAMES = ["T3 Code (Alpha)", "t3code"];
+// Kud Code instead imports official T3 Code's theme once: selection, halves, installed themes.
+const MARKER_FILE_NAME = KUD_CODE ? "t3-theme-imported" : "v1-local-storage-imported";
+const V1_PROFILE_NAMES = KUD_CODE
+  ? [KUD_IDENTITY.t3UserDataDirName]
+  : ["T3 Code (Alpha)", "t3code"];
+const KUD_IMPORTED_KEY_PREFIXES = [
+  "t3code:theme",
+  "t3code:environment-themes:",
+  "t3code:default-theme-applied:",
+  "t3code:default-appearance-applied:",
+];
+const isImportedKey = (key: string) =>
+  !KUD_CODE || KUD_IMPORTED_KEY_PREFIXES.some((prefix) => key.startsWith(prefix));
 
 const make = Effect.gen(function* () {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;
@@ -72,7 +84,7 @@ const make = Effect.gen(function* () {
   });
 
   const load = Effect.fn("desktop.legacyLocalStorage.load")(function* (userDataPath: string) {
-    if (environment.isDevelopment) return;
+    if (environment.isDevelopment && !KUD_CODE) return;
     const marker = path.join(userDataPath, MARKER_FILE_NAME);
     if (yield* fs.exists(marker).pipe(Effect.orElseSucceed(() => true))) return;
     yield* Ref.set(markerPath, Option.some(marker));
@@ -92,7 +104,10 @@ const make = Effect.gen(function* () {
       directory,
       keys: read.value.size,
     });
-    yield* Ref.set(items, Option.some(Object.fromEntries(read.value)));
+    yield* Ref.set(
+      items,
+      Option.some(Object.fromEntries([...read.value].filter(([key]) => isImportedKey(key)))),
+    );
   });
 
   return DesktopLegacyLocalStorage.of({

@@ -139,7 +139,10 @@ export const layer = Layer.effect(
       "runtime",
       DESKTOP_UPDATE_IN_PROGRESS_MARKER_FILE,
     );
-    const serverRuntimePath = environment.path.join(environment.stateDir, "server-runtime.json");
+    const serverRuntimePath = environment.path.join(
+      environment.serverStateDir,
+      "server-runtime.json",
+    );
     // The server publishes its runtime after HTTP readiness. Until then an SSH launcher
     // finds nothing to adopt, so dropping the marker earlier lets it start a competing server.
     const releaseUpdateMarker = Effect.fn("desktop.backendPool.releaseUpdateMarker")(function* (

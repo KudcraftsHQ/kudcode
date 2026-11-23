@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Kud Code mark: a K drawn as a small node graph (four nodes joined to one hub). -->
+  <defs>
+    <linearGradient id="ink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B5BF0"/>
+      <stop offset="1" stop-color="#8B3FE8"/>
+    </linearGradient>
+  </defs>
+  <g stroke="url(#ink)" stroke-width="40" stroke-linecap="round" fill="none">
+    <path d="M168 112V400M168 256L344 112M168 256L344 400"/>
+  </g>
+  <g fill="url(#ink)">
+    <circle cx="168" cy="112" r="44"/>
+    <circle cx="168" cy="400" r="44"/>
+    <circle cx="344" cy="112" r="44"/>
+    <circle cx="344" cy="400" r="44"/>
+  </g>
+  <circle cx="168" cy="256" r="54" fill="#FFB547"/>
+</svg>

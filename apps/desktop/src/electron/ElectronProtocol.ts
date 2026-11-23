@@ -12,12 +12,19 @@ import * as Scope from "effect/Scope";
 
 import * as Electron from "electron";
 
+import { KUD_CODE, kudAppLinkScheme } from "@t3tools/shared/kudIdentity";
+
 export const DESKTOP_HOST = "app";
 const DESKTOP_PRODUCTION_SCHEME = "t3code";
 const DESKTOP_DEVELOPMENT_SCHEME = "t3code-dev";
 
 export function getDesktopScheme(isDevelopment: boolean): string {
   return isDevelopment ? DESKTOP_DEVELOPMENT_SCHEME : DESKTOP_PRODUCTION_SCHEME;
+}
+
+/** The scheme the OS routes to this app. Kud Code's differs from its renderer scheme. */
+export function getDesktopAppLinkScheme(isDevelopment: boolean): string {
+  return KUD_CODE ? kudAppLinkScheme(isDevelopment) : getDesktopScheme(isDevelopment);
 }
 
 export function getDesktopOrigin(isDevelopment: boolean): string {

@@ -198,8 +198,13 @@ export const make = Effect.gen(function* () {
         return true;
       };
       const resumeProviderAuth = (value: string | undefined) => {
-        const destination = providerAuthReturnUrl(value);
+        const returned = providerAuthReturnUrl(value);
         const expectedOrigin = `${ElectronProtocol.getDesktopScheme(environment.isDevelopment)}://app`;
+        const linkOrigin = `${ElectronProtocol.getDesktopAppLinkScheme(environment.isDevelopment)}://app`;
+        // Kud Code receives `kudcode://app/...` from the OS and loads it on its renderer origin.
+        const destination = returned?.startsWith(`${linkOrigin}/`)
+          ? `${expectedOrigin}${returned.slice(linkOrigin.length)}`
+          : returned;
         if (!destination?.startsWith(`${expectedOrigin}/`)) return false;
         void runPromise(
           Effect.gen(function* () {

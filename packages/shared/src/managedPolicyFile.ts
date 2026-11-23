@@ -3,6 +3,7 @@ import {
   ManagedPolicyDocument,
   SERVER_EXIT_CODE_MANAGED_POLICY,
 } from "@t3tools/contracts";
+import { KUD_CODE, KUD_IDENTITY } from "./kudIdentity.ts";
 import * as Cause from "effect/Cause";
 import * as Context from "effect/Context";
 import * as Duration from "effect/Duration";
@@ -36,13 +37,13 @@ export class ManagedPolicyFileError extends Schema.TaggedError<ManagedPolicyFile
 export function managedPolicyPath(platform: NodeJS.Platform): string {
   switch (platform) {
     case "darwin":
-      return "/Library/Application Support/T3Code/policy.json";
+      return `/Library/Application Support/${KUD_CODE ? KUD_IDENTITY.managedPolicyDirName : "T3Code"}/policy.json`;
     case "win32":
       // Not ProgramData, where a user can create the folder first and own it; and not
       // %ProgramFiles%, which a user can point somewhere they write.
-      return "C:\\Program Files\\T3Code\\policy.json";
+      return `C:\\Program Files\\${KUD_CODE ? KUD_IDENTITY.managedPolicyDirName : "T3Code"}\\policy.json`;
     default:
-      return "/etc/t3code/policy.json";
+      return KUD_CODE ? "/etc/kudcode/policy.json" : "/etc/t3code/policy.json";
   }
 }
 
@@ -95,8 +96,7 @@ export const readManagedPolicyFile = Effect.fn("readManagedPolicyFile")(function
 });
 
 /** Where a configuration profile's managed preferences land on macOS. */
-export const MACOS_MANAGED_PREFERENCES_PATH =
-  "/Library/Managed Preferences/com.t3tools.t3code.plist";
+export const MACOS_MANAGED_PREFERENCES_PATH = `/Library/Managed Preferences/${KUD_CODE ? KUD_IDENTITY.appId : "com.t3tools.t3code"}.plist`;
 const WINDOWS_POLICY_SUBKEY = "SOFTWARE\\Policies\\T3Tools\\T3Code";
 /**
  * The registry key Group Policy and Intune write to on Windows. It holds either the Group Policy

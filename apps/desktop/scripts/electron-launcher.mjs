@@ -5,6 +5,7 @@ import * as NodeOS from "node:os";
 import * as NodePath from "node:path";
 import * as NodeURL from "node:url";
 import { ensureElectronRuntime } from "./ensure-electron-runtime.mjs";
+import { isKudCodeBuild, KUD_IDENTITY } from "@t3tools/shared/kudIdentity";
 
 const isDevelopment = Boolean(process.env.VITE_DEV_SERVER_URL);
 const __dirname = NodePath.dirname(NodeURL.fileURLToPath(import.meta.url));
@@ -13,19 +14,31 @@ const repoRoot = NodePath.resolve(desktopDir, "..", "..");
 const devBundleIdSuffix = NodePath.basename(repoRoot)
   .toLowerCase()
   .replaceAll(/[^a-z0-9]+/g, "");
-const APP_DISPLAY_NAME = isDevelopment ? "T3 Code (Dev)" : "T3 Code (Beta)";
+// Kud Code dev builds get their own bundle id and scheme so they never claim official T3 Code's.
+const kudCode = isKudCodeBuild(process.env);
+const APP_BASE_NAME = kudCode ? KUD_IDENTITY.baseName : "T3 Code";
+const APP_DISPLAY_NAME = isDevelopment
+  ? `${APP_BASE_NAME} (Dev)`
+  : kudCode
+    ? APP_BASE_NAME
+    : "T3 Code (Beta)";
+const APP_BUNDLE_ROOT_ID = kudCode ? KUD_IDENTITY.appId : "com.t3tools.t3code";
 const APP_BUNDLE_ID = isDevelopment
-  ? `com.t3tools.t3code.dev.${devBundleIdSuffix || "local"}`
-  : "com.t3tools.t3code";
-const APP_PROTOCOL_SCHEMES = isDevelopment ? ["t3code-dev"] : ["t3code"];
+  ? `${APP_BUNDLE_ROOT_ID}.dev.${devBundleIdSuffix || "local"}`
+  : APP_BUNDLE_ROOT_ID;
+const APP_PROTOCOL_SCHEMES = kudCode
+  ? [isDevelopment ? KUD_IDENTITY.devAppLinkScheme : KUD_IDENTITY.appLinkScheme]
+  : isDevelopment
+    ? ["t3code-dev"]
+    : ["t3code"];
 const LAUNCHER_VERSION = 20;
-const developmentMacIconPngPath = NodePath.join(
-  repoRoot,
-  "assets",
-  "dev",
-  "blueprint-macos-1024.png",
-);
-const productionMacIconPngPath = NodePath.join(repoRoot, "assets", "prod", "black-macos-1024.png");
+const kudMacIconPngPath = NodePath.join(repoRoot, "assets", "kud", "kud-macos-1024.png");
+const developmentMacIconPngPath = kudCode
+  ? kudMacIconPngPath
+  : NodePath.join(repoRoot, "assets", "dev", "blueprint-macos-1024.png");
+const productionMacIconPngPath = kudCode
+  ? kudMacIconPngPath
+  : NodePath.join(repoRoot, "assets", "prod", "black-macos-1024.png");
 // oxlint-disable-next-line t3code/no-global-process-runtime -- Standalone launcher script has no Effect runtime.
 const hostPlatform = NodeOS.platform();
 
@@ -267,9 +280,8 @@ function resolveMacBundleInfoPlistStrings(executableName) {
     CFBundleIdentifier: APP_BUNDLE_ID,
     CFBundleExecutable: executableName,
     CFBundleIconFile: "icon.icns",
-    NSScreenCaptureUsageDescription:
-      "T3 Code captures the active window when you use the snapshot shortcut.",
-    NSDocumentsFolderUsageDescription: "T3 Code reads project files you open in the desktop app.",
+    NSScreenCaptureUsageDescription: `${APP_BASE_NAME} captures the active window when you use the snapshot shortcut.`,
+    NSDocumentsFolderUsageDescription: `${APP_BASE_NAME} reads project files you open in the desktop app.`,
   };
 }
 

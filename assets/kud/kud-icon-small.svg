@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Simplified full-bleed Kud Code icon for 16-32px: bolder K graph, no texture. -->
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4F52E8"/>
+      <stop offset="1" stop-color="#7B2FD9"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#body)"/>
+  <path d="M10 6V26" stroke="#FFFFFF" stroke-width="4" fill="none"/>
+  <path d="M10 16L22 8M10 16L22 24" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="10" cy="16" r="4.5" fill="#FFB547"/>
+</svg>

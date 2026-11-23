@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Kud Code app icon, classic macOS grid: 824x824 body inset 100px, radius 185. -->
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4F52E8"/>
+      <stop offset="1" stop-color="#7B2FD9"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.3" cy="0.2" r="0.9">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="58" height="58" patternUnits="userSpaceOnUse" x="100" y="100">
+      <circle cx="29" cy="29" r="4" fill="#FFFFFF" fill-opacity="0.12"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <clipPath id="bodyClip">
+      <rect x="100" y="100" width="824" height="824" rx="185"/>
+    </clipPath>
+  </defs>
+  <rect class="shadow" x="100" y="116" width="824" height="824" rx="185" fill="#1A1240" fill-opacity="0.35" filter="url(#shadow)"/>
+  <g clip-path="url(#bodyClip)">
+    <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#body)"/>
+    <rect x="100" y="100" width="824" height="824" fill="url(#dots)"/>
+    <rect x="100" y="100" width="824" height="824" fill="url(#glow)"/>
+  </g>
+  <g transform="translate(512 512) scale(1.3) translate(-256 -256)">
+    <g stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" fill="none">
+      <path d="M168 112V400M168 256L344 112M168 256L344 400"/>
+    </g>
+    <g fill="#FFFFFF">
+      <circle cx="168" cy="112" r="44"/>
+      <circle cx="168" cy="400" r="44"/>
+      <circle cx="344" cy="112" r="44"/>
+      <circle cx="344" cy="400" r="44"/>
+    </g>
+    <circle cx="168" cy="256" r="58" fill="#FFB547"/>
+  </g>
+</svg>

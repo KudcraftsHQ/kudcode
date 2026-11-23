@@ -3,6 +3,7 @@ import * as NodeFSP from "node:fs/promises";
 
 import type { DesktopCliCommandState } from "@t3tools/contracts";
 import * as HostProcess from "@t3tools/shared/HostProcess";
+import { KUD_CODE } from "@t3tools/shared/kudIdentity";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
@@ -462,6 +463,17 @@ export const make = Effect.gen(function* () {
     Effect.withSpan("desktop.cliCommand.installOnFirstLaunch"),
   );
 
+  // Kud Code leaves `~/.t3/bin/t3` and shell startup files to official T3 Code.
+  if (KUD_CODE) {
+    const disabled = Effect.fail(fail("Kud Code leaves the t3 command to T3 Code."));
+    return DesktopCliCommand.of({
+      state,
+      install: disabled,
+      uninstall: disabled,
+      addToPath: disabled,
+      installOnFirstLaunch: Effect.void,
+    });
+  }
   return DesktopCliCommand.of({ state, install, uninstall, addToPath, installOnFirstLaunch });
 });
 

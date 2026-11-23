@@ -42,6 +42,7 @@ describe("local environment IPC", () => {
       const environment = DesktopEnvironment.DesktopEnvironment.of({
         path,
         stateDir,
+        serverStateDir: stateDir,
       } as DesktopEnvironment.DesktopEnvironment["Service"]);
       const read = getHostEnvironmentId
         .handler(undefined)

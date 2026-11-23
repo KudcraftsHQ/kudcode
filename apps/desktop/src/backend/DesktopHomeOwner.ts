@@ -41,8 +41,8 @@ const isProcessAlive = (pid: number): boolean => {
  */
 const isHomeOwnershipLocked = Effect.fn("DesktopHomeOwner.isHomeOwnershipLocked")(function* () {
   const path = yield* Path.Path;
-  const { stateDir } = yield* DesktopEnvironment.DesktopEnvironment;
-  const lockPath = path.join(stateDir, "server-owner.sqlite");
+  const { serverStateDir } = yield* DesktopEnvironment.DesktopEnvironment;
+  const lockPath = path.join(serverStateDir, "server-owner.sqlite");
   return yield* Effect.sync(() => {
     try {
       const db = new NodeSqlite.DatabaseSync(lockPath, { readOnly: true });
@@ -82,9 +82,9 @@ export const awaitHomeOwnershipRelease = Effect.fn("DesktopHomeOwner.awaitHomeOw
 export const readLiveHomeOwner = Effect.fn("DesktopHomeOwner.readLiveHomeOwner")(function* () {
   const fs = yield* FileSystem.FileSystem;
   const path = yield* Path.Path;
-  const { stateDir } = yield* DesktopEnvironment.DesktopEnvironment;
+  const { serverStateDir } = yield* DesktopEnvironment.DesktopEnvironment;
   const raw = yield* fs
-    .readFileString(path.join(stateDir, "server-runtime.json"))
+    .readFileString(path.join(serverStateDir, "server-runtime.json"))
     .pipe(Effect.option);
   return Option.flatMap(raw, decodeHomeOwner).pipe(
     Option.filter((owner) => isProcessAlive(owner.pid)),

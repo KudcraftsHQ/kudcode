@@ -35,9 +35,20 @@ export const BRAND_ASSET_PATHS = {
   developmentWebAppleTouchIconPng: "assets/dev/blueprint-web-apple-touch-180.png",
   developmentWebIcon192Png: "assets/dev/blueprint-web-icon-192x192.png",
   developmentWebIcon512Png: "assets/dev/blueprint-web-icon-512x512.png",
+
+  // Kud Code; sources and exporter in assets/kud and scripts/kud/export-kud-icons.ts.
+  kudMacIconPng: "assets/kud/kud-macos-1024.png",
+  kudLinuxIconPng: "assets/kud/kud-universal-1024.png",
+  kudWindowsIconIco: "assets/kud/kud-windows.ico",
+  kudWebFaviconIco: "assets/kud/kud-web-favicon.ico",
+  kudWebFavicon16Png: "assets/kud/kud-web-favicon-16x16.png",
+  kudWebFavicon32Png: "assets/kud/kud-web-favicon-32x32.png",
+  kudWebAppleTouchIconPng: "assets/kud/kud-web-apple-touch-180.png",
+  kudWebIcon192Png: "assets/kud/kud-web-icon-192x192.png",
+  kudWebIcon512Png: "assets/kud/kud-web-icon-512x512.png",
 } as const;
 
-export type WebAssetBrand = "development" | "nightly" | "production";
+export type WebAssetBrand = "development" | "nightly" | "production" | "kud";
 
 export const WEB_ASSET_CHANNELS = ["latest", "nightly"] as const;
 
@@ -85,6 +96,14 @@ const WEB_ICON_SOURCE_PATHS_BY_BRAND = {
     appleTouchIconPng: BRAND_ASSET_PATHS.productionWebAppleTouchIconPng,
     icon192Png: BRAND_ASSET_PATHS.productionWebIcon192Png,
     icon512Png: BRAND_ASSET_PATHS.productionWebIcon512Png,
+  },
+  kud: {
+    faviconIco: BRAND_ASSET_PATHS.kudWebFaviconIco,
+    favicon16Png: BRAND_ASSET_PATHS.kudWebFavicon16Png,
+    favicon32Png: BRAND_ASSET_PATHS.kudWebFavicon32Png,
+    appleTouchIconPng: BRAND_ASSET_PATHS.kudWebAppleTouchIconPng,
+    icon192Png: BRAND_ASSET_PATHS.kudWebIcon192Png,
+    icon512Png: BRAND_ASSET_PATHS.kudWebIcon512Png,
   },
 } as const satisfies Record<WebAssetBrand, Record<keyof typeof WEB_ICON_TARGET_FILENAMES, string>>;
 
