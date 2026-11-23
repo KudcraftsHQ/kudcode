@@ -78,9 +78,20 @@ Briefs are automatic: no review step.
 - **Report back:** `thread.merge_back` (`threadEnvironment.mergeBack`) from a child to its parent. Shown on
   a fork node and in the child's header.
 - **Link to parent (manual):** drag a root node onto another node, or "Link under..." in the node menu.
-  Stored as a thread tag `kud:parent:<threadId>` via `thread.tag.set` (shared by every client; official
-  T3 Code does not display tags). Engine lineage always wins over the tag, so forks that inherit tags are
-  unaffected. "Unlink" removes the tag.
+  Stored in the **link store** (`apps/web/src/kud/links/`): one JSON document per T3 server,
+  `<T3 home>/worktrees/.kudcode/links.json`, shared by every Kud Code client of that server
+  (`{ version, revision, writeId, updatedAt, links: [{ parentThreadId, childThreadId, label?, createdAt,
+  createdBy }] }`). Read and written with `projects.readFile` / `projects.writeFile` (`cwd` = the server's
+  managed worktrees folder, derived from `keybindingsConfigPath`), so the server is unmodified: that folder
+  is the one place outside the user's repositories every server accepts writes into. No rename or
+  compare-and-swap exists, so a write is read back and retried when another client's write replaced it.
+  A missing or corrupt file reads as empty (a corrupt one is copied to `links.json.bak` first). Loaded
+  when an environment connects, refreshed on window focus and every 3 minutes. Engine lineage always
+  wins over a manual link. "Unlink" removes the entry. Connections without `filesystem:read` fall back to
+  the old tags, read-only.
+  - Before the store, links were thread tags `kud:parent:<threadId>` (64-char limit, one parent, copied
+    onto forks). On first load per environment each such tag is moved into the store (only removed when
+    the thread has engine lineage, since a fork copied it) and then removed from the thread.
 
 ## 3. Desktop app that coexists with T3 Code (`apps/desktop`, `scripts/build-desktop-artifact.ts`)
 

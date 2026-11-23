@@ -3202,10 +3202,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "auf dem Computer, der diese Seite geöffnet hat"
-      ]
+      "c": [" ", "auf dem Computer, der diese Seite geöffnet hat"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3217,10 +3214,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· wer es ausführt, erhält diesen Zugriff"
-      ]
+      "c": [" ", "· wer es ausführt, erhält diesen Zugriff"]
     }
   ],
   "c54cc9c75db9dc58": "Genehmige nur eine Anmeldung, die du gerade selbst gestartet hast.",
@@ -12729,6 +12723,40 @@
   "c89f668ba4057829": "Richtungen erkunden…",
   "807707d4a33c603f": "An übergeordneten Thread melden",
   "0873c92c97f73f56": "Trennen",
+  "8c81c7432e438824": "Richtung",
+  "2940da8db088cd1f": "Diese Richtung entfernen",
+  "6b5990c86b8c4833": "Eine Richtung für diesen Thread",
+  "779772eb70607c03": "Forken",
+  "e3e38aa386a26fa0": "{count, plural, one {{count} Fork starten} other {{count} Forks starten}}",
+  "20cb84942c356086": "Der Fork startet mit einem kurzen Briefing dieses Threads statt mit dem ganzen Verlauf und folgt dann der Richtung, die du vorgibst.",
+  "0b26a7bce9b16f15": "Ein Briefing dieses Threads, dann ein Fork pro Richtung, alle gleichzeitig gestartet. Jeder trägt das Briefing statt des ganzen Verlaufs.",
+  "5663fada83b33dd7": "Diese Richtung entfernen",
+  "07bc31c7af19cda7": "Der Fork konnte nicht erstellt werden",
+  "1c4443dba06aba00": "Mit Briefing forken",
+  "cd64d26f943fa9e8": "Mit Briefing forken",
+  "5f18181fb502c1a2": "Mit Briefing forken...",
+  "2a7ff642459581f2": "Richtungen erkunden...",
+  "298863d82706d076": "Abgebrochen.",
+  "ead2ca80d4fac317": "Der Server hat den Befehl abgelehnt.",
+  "ffb1e427a1998200": "Der Fork konnte nicht mit einem Briefing starten",
+  "bf83acfba3fad1f7": "Die Nachricht konnte nicht gesendet werden.",
+  "de8ab5527c68bb89": "Das Briefing wurde nicht rechtzeitig fertig. Öffne den Fork, um zu sehen, wo es stehen geblieben ist.",
+  "4f92d5483455c757": "Das Briefing kam leer zurück. Öffne den Fork und schreibe die erste Nachricht selbst.",
+  "4a8365abf8d0787a": "Der Briefing-Lauf wurde nicht abgeschlossen. Öffne den Fork und schreibe die erste Nachricht selbst.",
+  "f17ff9fd1f438cf8": "Der Fork hat den Verlauf des übergeordneten Threads behalten",
+  "d007146f39e7e9a0": "Dieser Server konnte ihn nicht mit frischem Kontext starten, daher wurde das Briefing als normale Nachricht gesendet.",
+  "02795038b747e1bb": "Dieser Server kann keinen Thread mit frischem Kontext starten, daher wurde kein Briefing erstellt.",
+  "80b2c5d21ed3cd98": "Beschreibe, wohin der Fork gehen soll.",
+  "e88264af79134e3f": "Ein Fork konnte nicht erstellt werden",
+  "77fcebf1782bd827": "Nur ein Fork kann an seinen übergeordneten Thread zurückmelden.",
+  "a47225ce3e4be13c": "Ein Thread kann nur unter einem Thread auf demselben Rechner verknüpft werden.",
+  "bb28679587c7e9c4": "Ein Thread kann nicht unter sich selbst verknüpft werden.",
+  "48df68bb091c712e": "Diese Threads sind bereits andersherum verknüpft.",
+  "d5120745cce8256c": "Der Server konnte die Verknüpfung nicht speichern.",
+  "667d108ebefa3af9": "Dieser Rechner ist nicht verbunden.",
+  "6e8fb2ad5a9a0c33": "Diese Verbindung kann auf diesem Rechner keine Verknüpfungen speichern.",
+  "2f0435c42dfc6007": "Die gespeicherten Verknüpfungen konnten nicht gelesen werden.",
+  "c1c3217c81ef03f1": "Ein anderes Fenster hat die Verknüpfungen ständig geändert. Versuche es erneut.",
   "d5ef094f40aedece": "Terminal-Eingabe",
   "f7046b10d49caab6": "Terminal-Verlauf",
   "24de858bbcf05f40": "Folie {number}",
@@ -12842,35 +12870,5 @@
   "27d76249d09eb69f": "Review-Leitfaden bereit",
   "faa3bb26abb39c93": "Review-Leitfaden fehlgeschlagen",
   "b7df38b7d8792d78": "Leitfaden öffnen",
-  "9e91e9a77b664e4e": "Review-Leitfaden konnte nicht gestartet werden",
-  "8c81c7432e438824": "Richtung",
-  "2940da8db088cd1f": "Diese Richtung entfernen",
-  "6b5990c86b8c4833": "Eine Richtung für diesen Thread",
-  "779772eb70607c03": "Forken",
-  "e3e38aa386a26fa0": "{count, plural, one {{count} Fork starten} other {{count} Forks starten}}",
-  "20cb84942c356086": "Der Fork startet mit einem kurzen Briefing dieses Threads statt mit dem ganzen Verlauf und folgt dann der Richtung, die du vorgibst.",
-  "0b26a7bce9b16f15": "Ein Briefing dieses Threads, dann ein Fork pro Richtung, alle gleichzeitig gestartet. Jeder trägt das Briefing statt des ganzen Verlaufs.",
-  "5663fada83b33dd7": "Diese Richtung entfernen",
-  "07bc31c7af19cda7": "Der Fork konnte nicht erstellt werden",
-  "1c4443dba06aba00": "Mit Briefing forken",
-  "cd64d26f943fa9e8": "Mit Briefing forken",
-  "5f18181fb502c1a2": "Mit Briefing forken...",
-  "2a7ff642459581f2": "Richtungen erkunden...",
-  "298863d82706d076": "Abgebrochen.",
-  "ead2ca80d4fac317": "Der Server hat den Befehl abgelehnt.",
-  "ffb1e427a1998200": "Der Fork konnte nicht mit einem Briefing starten",
-  "bf83acfba3fad1f7": "Die Nachricht konnte nicht gesendet werden.",
-  "de8ab5527c68bb89": "Das Briefing wurde nicht rechtzeitig fertig. Öffne den Fork, um zu sehen, wo es stehen geblieben ist.",
-  "4f92d5483455c757": "Das Briefing kam leer zurück. Öffne den Fork und schreibe die erste Nachricht selbst.",
-  "4a8365abf8d0787a": "Der Briefing-Lauf wurde nicht abgeschlossen. Öffne den Fork und schreibe die erste Nachricht selbst.",
-  "f17ff9fd1f438cf8": "Der Fork hat den Verlauf des übergeordneten Threads behalten",
-  "d007146f39e7e9a0": "Dieser Server konnte ihn nicht mit frischem Kontext starten, daher wurde das Briefing als normale Nachricht gesendet.",
-  "02795038b747e1bb": "Dieser Server kann keinen Thread mit frischem Kontext starten, daher wurde kein Briefing erstellt.",
-  "80b2c5d21ed3cd98": "Beschreibe, wohin der Fork gehen soll.",
-  "e88264af79134e3f": "Ein Fork konnte nicht erstellt werden",
-  "77fcebf1782bd827": "Nur ein Fork kann an seinen übergeordneten Thread zurückmelden.",
-  "a47225ce3e4be13c": "Ein Thread kann nur unter einem Thread auf demselben Rechner verknüpft werden.",
-  "bb28679587c7e9c4": "Ein Thread kann nicht unter sich selbst verknüpft werden.",
-  "48df68bb091c712e": "Diese Threads sind bereits andersherum verknüpft.",
-  "771b30ba0791004c": "Die ID dieses übergeordneten Threads ist zu lang, um als Verknüpfung gespeichert zu werden."
+  "9e91e9a77b664e4e": "Review-Leitfaden konnte nicht gestartet werden"
 }

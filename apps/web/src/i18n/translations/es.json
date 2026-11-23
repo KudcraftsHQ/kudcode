@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "en el ordenador que abrió esta página"
-      ]
+      "c": [" ", "en el ordenador que abrió esta página"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· quien lo ejecute obtiene este acceso"
-      ]
+      "c": [" ", "· quien lo ejecute obtiene este acceso"]
     }
   ],
   "c54cc9c75db9dc58": "Aprueba solo un inicio de sesión que acabes de iniciar.",
@@ -12722,6 +12716,40 @@
   "c89f668ba4057829": "Explorar direcciones…",
   "807707d4a33c603f": "Informar al hilo principal",
   "0873c92c97f73f56": "Desvincular",
+  "8c81c7432e438824": "Dirección",
+  "2940da8db088cd1f": "Quitar esta dirección",
+  "6b5990c86b8c4833": "Un camino para este hilo",
+  "779772eb70607c03": "Bifurcar",
+  "e3e38aa386a26fa0": "{count, plural, one {Iniciar {count} bifurcación} other {Iniciar {count} bifurcaciones}}",
+  "20cb84942c356086": "La bifurcación empieza con un resumen breve de este hilo en lugar de todo su historial y luego sigue la dirección que le indiques.",
+  "0b26a7bce9b16f15": "Un resumen de este hilo y luego una bifurcación por dirección, todas iniciadas a la vez. Cada una lleva el resumen en lugar de todo el historial.",
+  "5663fada83b33dd7": "Quitar esta dirección",
+  "07bc31c7af19cda7": "No se pudo crear la bifurcación",
+  "1c4443dba06aba00": "Bifurcar con un resumen",
+  "cd64d26f943fa9e8": "Bifurcar con un resumen",
+  "5f18181fb502c1a2": "Bifurcar con resumen...",
+  "2a7ff642459581f2": "Explorar direcciones...",
+  "298863d82706d076": "Cancelado.",
+  "ead2ca80d4fac317": "El servidor rechazó el comando.",
+  "ffb1e427a1998200": "La bifurcación no pudo empezar desde un resumen",
+  "bf83acfba3fad1f7": "No se pudo enviar el mensaje.",
+  "de8ab5527c68bb89": "El resumen no terminó a tiempo. Abre la bifurcación para ver dónde se detuvo.",
+  "4f92d5483455c757": "El resumen volvió vacío. Abre la bifurcación y escribe tú el primer mensaje.",
+  "4a8365abf8d0787a": "La ejecución del resumen no se completó. Abre la bifurcación y escribe tú el primer mensaje.",
+  "f17ff9fd1f438cf8": "La bifurcación conservó el historial del hilo original",
+  "d007146f39e7e9a0": "Este servidor no pudo iniciarla con contexto nuevo, así que el resumen se envió como un mensaje normal.",
+  "02795038b747e1bb": "Este servidor no puede iniciar un hilo con contexto nuevo, así que no se hizo ningún resumen.",
+  "80b2c5d21ed3cd98": "Describe hacia dónde debe ir la bifurcación.",
+  "e88264af79134e3f": "No se pudo crear una bifurcación",
+  "77fcebf1782bd827": "Solo una bifurcación puede informar a su hilo original.",
+  "a47225ce3e4be13c": "Un hilo solo se puede vincular bajo un hilo de la misma máquina.",
+  "bb28679587c7e9c4": "Un hilo no se puede vincular bajo sí mismo.",
+  "48df68bb091c712e": "Estos hilos ya están vinculados al revés.",
+  "d5120745cce8256c": "El servidor no pudo guardar el vínculo.",
+  "667d108ebefa3af9": "Esta máquina no está conectada.",
+  "6e8fb2ad5a9a0c33": "Esta conexión no puede guardar vínculos en esa máquina.",
+  "2f0435c42dfc6007": "No se pudieron leer los vínculos guardados.",
+  "c1c3217c81ef03f1": "Otra ventana siguió cambiando los vínculos. Inténtalo de nuevo.",
   "d5ef094f40aedece": "Entrada de la terminal",
   "f7046b10d49caab6": "Historial de desplazamiento de la terminal",
   "24de858bbcf05f40": "Diapositiva {number}",
@@ -12837,35 +12865,5 @@
   "27d76249d09eb69f": "Guía de revisión lista",
   "faa3bb26abb39c93": "Falló la guía de revisión",
   "b7df38b7d8792d78": "Abrir guía",
-  "9e91e9a77b664e4e": "No se pudo iniciar una guía de revisión",
-  "8c81c7432e438824": "Dirección",
-  "2940da8db088cd1f": "Quitar esta dirección",
-  "6b5990c86b8c4833": "Un camino para este hilo",
-  "779772eb70607c03": "Bifurcar",
-  "e3e38aa386a26fa0": "{count, plural, one {Iniciar {count} bifurcación} other {Iniciar {count} bifurcaciones}}",
-  "20cb84942c356086": "La bifurcación empieza con un resumen breve de este hilo en lugar de todo su historial y luego sigue la dirección que le indiques.",
-  "0b26a7bce9b16f15": "Un resumen de este hilo y luego una bifurcación por dirección, todas iniciadas a la vez. Cada una lleva el resumen en lugar de todo el historial.",
-  "5663fada83b33dd7": "Quitar esta dirección",
-  "07bc31c7af19cda7": "No se pudo crear la bifurcación",
-  "1c4443dba06aba00": "Bifurcar con un resumen",
-  "cd64d26f943fa9e8": "Bifurcar con un resumen",
-  "5f18181fb502c1a2": "Bifurcar con resumen...",
-  "2a7ff642459581f2": "Explorar direcciones...",
-  "298863d82706d076": "Cancelado.",
-  "ead2ca80d4fac317": "El servidor rechazó el comando.",
-  "ffb1e427a1998200": "La bifurcación no pudo empezar desde un resumen",
-  "bf83acfba3fad1f7": "No se pudo enviar el mensaje.",
-  "de8ab5527c68bb89": "El resumen no terminó a tiempo. Abre la bifurcación para ver dónde se detuvo.",
-  "4f92d5483455c757": "El resumen volvió vacío. Abre la bifurcación y escribe tú el primer mensaje.",
-  "4a8365abf8d0787a": "La ejecución del resumen no se completó. Abre la bifurcación y escribe tú el primer mensaje.",
-  "f17ff9fd1f438cf8": "La bifurcación conservó el historial del hilo original",
-  "d007146f39e7e9a0": "Este servidor no pudo iniciarla con contexto nuevo, así que el resumen se envió como un mensaje normal.",
-  "02795038b747e1bb": "Este servidor no puede iniciar un hilo con contexto nuevo, así que no se hizo ningún resumen.",
-  "80b2c5d21ed3cd98": "Describe hacia dónde debe ir la bifurcación.",
-  "e88264af79134e3f": "No se pudo crear una bifurcación",
-  "77fcebf1782bd827": "Solo una bifurcación puede informar a su hilo original.",
-  "a47225ce3e4be13c": "Un hilo solo se puede vincular bajo un hilo de la misma máquina.",
-  "bb28679587c7e9c4": "Un hilo no se puede vincular bajo sí mismo.",
-  "48df68bb091c712e": "Estos hilos ya están vinculados al revés.",
-  "771b30ba0791004c": "El id de este hilo original es demasiado largo para guardarlo como vínculo."
+  "9e91e9a77b664e4e": "No se pudo iniciar una guía de revisión"
 }

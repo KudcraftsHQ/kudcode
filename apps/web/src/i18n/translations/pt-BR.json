@@ -3201,10 +3201,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "no computador que abriu esta página"
-      ]
+      "c": [" ", "no computador que abriu esta página"]
     }
   ],
   "b2d53b4d1d48fbef": [
@@ -3216,10 +3213,7 @@
     {
       "t": "span",
       "i": 2,
-      "c": [
-        " ",
-        "· quem executar recebe este acesso"
-      ]
+      "c": [" ", "· quem executar recebe este acesso"]
     }
   ],
   "c54cc9c75db9dc58": "Aprove apenas um login que você acabou de iniciar.",
@@ -12727,6 +12721,40 @@
   "c89f668ba4057829": "Explorar direções…",
   "807707d4a33c603f": "Reportar à thread principal",
   "0873c92c97f73f56": "Desvincular",
+  "8c81c7432e438824": "Direção",
+  "2940da8db088cd1f": "Remover esta direção",
+  "6b5990c86b8c4833": "Um caminho para esta conversa",
+  "779772eb70607c03": "Criar fork",
+  "e3e38aa386a26fa0": "{count, plural, one {Iniciar {count} fork} other {Iniciar {count} forks}}",
+  "20cb84942c356086": "O fork começa com um resumo curto desta conversa em vez de todo o histórico e depois segue a direção que você indicar.",
+  "0b26a7bce9b16f15": "Um resumo desta conversa e depois um fork por direção, todos iniciados ao mesmo tempo. Cada um leva o resumo em vez de todo o histórico.",
+  "5663fada83b33dd7": "Remover esta direção",
+  "07bc31c7af19cda7": "Não foi possível criar o fork",
+  "1c4443dba06aba00": "Fork com um resumo",
+  "cd64d26f943fa9e8": "Fork com um resumo",
+  "5f18181fb502c1a2": "Fork com resumo...",
+  "2a7ff642459581f2": "Explorar direções...",
+  "298863d82706d076": "Cancelado.",
+  "ead2ca80d4fac317": "O servidor recusou o comando.",
+  "ffb1e427a1998200": "Não foi possível iniciar o fork a partir de um resumo",
+  "bf83acfba3fad1f7": "Não foi possível enviar a mensagem.",
+  "de8ab5527c68bb89": "O resumo não terminou a tempo. Abra o fork para ver onde parou.",
+  "4f92d5483455c757": "O resumo voltou vazio. Abra o fork e escreva você mesmo a primeira mensagem.",
+  "4a8365abf8d0787a": "A execução do resumo não foi concluída. Abra o fork e escreva você mesmo a primeira mensagem.",
+  "f17ff9fd1f438cf8": "O fork manteve o histórico da conversa original",
+  "d007146f39e7e9a0": "Este servidor não conseguiu iniciá-lo com contexto novo, então o resumo foi enviado como uma mensagem normal.",
+  "02795038b747e1bb": "Este servidor não consegue iniciar uma conversa com contexto novo, então nenhum resumo foi feito.",
+  "80b2c5d21ed3cd98": "Descreva para onde o fork deve ir.",
+  "e88264af79134e3f": "Não foi possível criar um fork",
+  "77fcebf1782bd827": "Só um fork pode reportar à conversa original.",
+  "a47225ce3e4be13c": "Uma conversa só pode ser vinculada a outra na mesma máquina.",
+  "bb28679587c7e9c4": "Uma conversa não pode ser vinculada a si mesma.",
+  "48df68bb091c712e": "Estas conversas já estão vinculadas no sentido inverso.",
+  "d5120745cce8256c": "O servidor não conseguiu salvar o vínculo.",
+  "667d108ebefa3af9": "Esta máquina não está conectada.",
+  "6e8fb2ad5a9a0c33": "Esta conexão não pode salvar vínculos nessa máquina.",
+  "2f0435c42dfc6007": "Não foi possível ler os vínculos salvos.",
+  "c1c3217c81ef03f1": "Outra janela continuou alterando os vínculos. Tente novamente.",
   "d5ef094f40aedece": "Entrada do terminal",
   "f7046b10d49caab6": "Histórico de rolagem do terminal",
   "24de858bbcf05f40": "Slide {number}",
@@ -12842,35 +12870,5 @@
   "27d76249d09eb69f": "Guia de revisão pronto",
   "faa3bb26abb39c93": "O guia de revisão falhou",
   "b7df38b7d8792d78": "Abrir guia",
-  "9e91e9a77b664e4e": "Não foi possível iniciar um guia de revisão",
-  "8c81c7432e438824": "Direção",
-  "2940da8db088cd1f": "Remover esta direção",
-  "6b5990c86b8c4833": "Um caminho para esta conversa",
-  "779772eb70607c03": "Criar fork",
-  "e3e38aa386a26fa0": "{count, plural, one {Iniciar {count} fork} other {Iniciar {count} forks}}",
-  "20cb84942c356086": "O fork começa com um resumo curto desta conversa em vez de todo o histórico e depois segue a direção que você indicar.",
-  "0b26a7bce9b16f15": "Um resumo desta conversa e depois um fork por direção, todos iniciados ao mesmo tempo. Cada um leva o resumo em vez de todo o histórico.",
-  "5663fada83b33dd7": "Remover esta direção",
-  "07bc31c7af19cda7": "Não foi possível criar o fork",
-  "1c4443dba06aba00": "Fork com um resumo",
-  "cd64d26f943fa9e8": "Fork com um resumo",
-  "5f18181fb502c1a2": "Fork com resumo...",
-  "2a7ff642459581f2": "Explorar direções...",
-  "298863d82706d076": "Cancelado.",
-  "ead2ca80d4fac317": "O servidor recusou o comando.",
-  "ffb1e427a1998200": "Não foi possível iniciar o fork a partir de um resumo",
-  "bf83acfba3fad1f7": "Não foi possível enviar a mensagem.",
-  "de8ab5527c68bb89": "O resumo não terminou a tempo. Abra o fork para ver onde parou.",
-  "4f92d5483455c757": "O resumo voltou vazio. Abra o fork e escreva você mesmo a primeira mensagem.",
-  "4a8365abf8d0787a": "A execução do resumo não foi concluída. Abra o fork e escreva você mesmo a primeira mensagem.",
-  "f17ff9fd1f438cf8": "O fork manteve o histórico da conversa original",
-  "d007146f39e7e9a0": "Este servidor não conseguiu iniciá-lo com contexto novo, então o resumo foi enviado como uma mensagem normal.",
-  "02795038b747e1bb": "Este servidor não consegue iniciar uma conversa com contexto novo, então nenhum resumo foi feito.",
-  "80b2c5d21ed3cd98": "Descreva para onde o fork deve ir.",
-  "e88264af79134e3f": "Não foi possível criar um fork",
-  "77fcebf1782bd827": "Só um fork pode reportar à conversa original.",
-  "a47225ce3e4be13c": "Uma conversa só pode ser vinculada a outra na mesma máquina.",
-  "bb28679587c7e9c4": "Uma conversa não pode ser vinculada a si mesma.",
-  "48df68bb091c712e": "Estas conversas já estão vinculadas no sentido inverso.",
-  "771b30ba0791004c": "O id desta conversa original é longo demais para salvar como vínculo."
+  "9e91e9a77b664e4e": "Não foi possível iniciar um guia de revisão"
 }

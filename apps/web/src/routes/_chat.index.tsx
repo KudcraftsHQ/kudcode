@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { HostedEmptyState } from "../components/HostedEmptyState";
 import { KudHomeLanding } from "../kud/canvas/HomeCanvas";
+import { KudManualLinksProvider } from "../kud/links/KudManualLinksProvider";
 import { useEnvironments } from "../state/environments";
 
 function ChatIndexRouteView() {
@@ -13,7 +14,11 @@ function ChatIndexRouteView() {
     if (environments.length === 0) return <HostedEmptyState />;
   }
 
-  return <KudHomeLanding />;
+  return (
+    <KudManualLinksProvider>
+      <KudHomeLanding />
+    </KudManualLinksProvider>
+  );
 }
 
 export const Route = createFileRoute("/_chat/")({
