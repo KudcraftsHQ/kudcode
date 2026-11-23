@@ -864,9 +864,14 @@ const STEPS: ReadonlyArray<Step> = [
  * first and refuse to go on with the wrong pnpm.
  */
 function preflightToolchain(): void {
-  const vitePlusBin = NodePath.join(NodeOS.homedir(), ".local", "share", "vite-plus", "bin");
-  if (NodeFS.existsSync(vitePlusBin)) {
-    process.env.PATH = [vitePlusBin, process.env.PATH ?? ""].join(NodePath.delimiter);
+  // Vite+ keeps its pnpm in `bin` on some installs and in `fallback-bin` on others.
+  const vitePlusHome = NodePath.join(NodeOS.homedir(), ".local", "share", "vite-plus");
+  const vitePlusBin = NodePath.join(vitePlusHome, "bin");
+  const vitePlusDirs = [vitePlusBin, NodePath.join(vitePlusHome, "fallback-bin")].filter((dir) =>
+    NodeFS.existsSync(dir),
+  );
+  if (vitePlusDirs.length > 0) {
+    process.env.PATH = [...vitePlusDirs, process.env.PATH ?? ""].join(NodePath.delimiter);
   }
   const manifest = JSON.parse(
     NodeFS.readFileSync(NodePath.join(REPO_ROOT, "package.json"), "utf8"),
