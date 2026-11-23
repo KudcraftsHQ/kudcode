@@ -3,6 +3,7 @@ import * as Effect from "effect/Effect";
 import * as FileSystem from "effect/FileSystem";
 import * as Option from "effect/Option";
 import * as Random from "effect/Random";
+import { KUD_CODE } from "@t3tools/shared/kudIdentity";
 
 import * as DesktopEnvironment from "./DesktopEnvironment.ts";
 import { makeComponentLogger } from "./DesktopObservability.ts";
@@ -147,6 +148,8 @@ export const launcherPath = (environment: DesktopEnvironment.DesktopEnvironment[
 export const install = Effect.gen(function* () {
   const environment = yield* DesktopEnvironment.DesktopEnvironment;
   if (!environment.isPackaged) return Option.none<string>();
+  // Kud Code leaves `~/.t3/bin/t3` to official T3 Code: the shim would run Kud Code's bundled CLI.
+  if (KUD_CODE) return Option.none<string>();
   const fs = yield* FileSystem.FileSystem;
   const path = environment.path;
   const windows = environment.platform === "win32";
